@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-function Login() {
+function Login(props) {
   const [disabled, setDisabled] = useState(true);
 
   const [login, setLogin] = useState({
@@ -17,6 +17,11 @@ function Login() {
     } else {
       setDisabled(true);
     }
+  };
+
+  const setLocalStorange = () => {
+    const { email } = login;
+    localStorage.setItem('user', JSON.stringify({ email }));
   };
 
   useEffect(() => {
@@ -61,6 +66,7 @@ function Login() {
         data-testid="login-submit-btn"
         type="button"
         disabled={ disabled }
+        onClick={ () => setLocalStorange() }
       >
         Enter
 

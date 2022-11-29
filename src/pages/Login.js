@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 
 function Login() {
   const [disabled, setDisabled] = useState(true);
-
+  const history = useHistory();
   const [login, setLogin] = useState({
     email: '',
     password: '',
   });
-
+  const redirectRecipes = () => {
+    history.push('/meals');
+  };
   const validation = () => {
     const SIX = 7;
     const regex = /[\w.ã]+@\w+\.\w{2,8}(\.\w{0,2})?/g;
@@ -66,7 +69,10 @@ function Login() {
         data-testid="login-submit-btn"
         type="button"
         disabled={ disabled }
-        onClick={ () => setLocalStorange() }
+        onClick={ () => {
+          setLocalStorange();
+          redirectRecipes();
+        } }
       >
         Enter
 

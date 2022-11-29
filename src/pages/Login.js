@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-function Login(props) {
+function Login() {
   const [disabled, setDisabled] = useState(true);
 
   const [login, setLogin] = useState({

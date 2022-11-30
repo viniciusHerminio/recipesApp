@@ -1,6 +1,24 @@
-import React from 'react';
+import { useState } from 'react';
+import { radioIngredientsApi, radioNamesApi,
+  radioFirstLetterApi } from '../services/radioInputApi';
 
 function SearchBar() {
+  const { searchInput, setSearchInput } = useState('');
+  const { radioInput, setRadioinput } = useState('');
+
+  const searchClick = () => {
+    if (radioInput === 'ingredient') {
+      radioIngredientsApi(searchInput);
+    }
+    if (radioInput === 'name') {
+      radioNamesApi(searchInput);
+    }
+    if (radioInput === 'first-letter' && searchInput.length > 1) {
+      global.alert('Your search must have only 1 (one) character');
+    }
+    radioFirstLetterApi(searchInput);
+  };
+
   return (
     <div>
       <label htmlFor="ingredient">
@@ -11,7 +29,7 @@ function SearchBar() {
           name="ingedient"
           value="ingredient"
           // checked={}
-          // onchange={}
+          onChange={ ({ target: { value } }) => setRadioinput(value) }
         />
       </label>
       <label htmlFor="name">
@@ -22,7 +40,7 @@ function SearchBar() {
           name="name"
           value="name"
           // checked={}
-          // onchange={}
+          onChange={ ({ target: { value } }) => setRadioinput(value) }
         />
       </label>
       <label htmlFor="first-letter">
@@ -31,17 +49,26 @@ function SearchBar() {
           type="radio"
           data-testid="first-letter-search-radio"
           name="firs-letter"
-          value="first-letterr"
+          value="first-letter"
           // checked={}
-          // onchange={}
+          onChange={ ({ target: { value } }) => setRadioinput(value) }
+        />
+      </label>
+      <label htmlFor="search-input">
+        <input
+          type="text"
+          data-testid="search-input"
+          name="search-input"
+          value={ searchInput }
+          onChange={ ({ target: { value } }) => setSearchInput(value) }
         />
       </label>
       <button
         type="button"
         data-testid="exec-search-btn"
-        // onClick={}
+        onClick={ searchClick }
       >
-        Buscar
+        Search
       </button>
     </div>
   );

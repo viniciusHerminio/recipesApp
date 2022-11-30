@@ -9,5 +9,3 @@ export const drinksCategoryAPI = async () => {
   const response = await fetch(endpoint).then((res) => res.json());
   return response;
 };
-
-// export default drinksAPI;

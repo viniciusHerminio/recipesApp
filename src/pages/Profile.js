@@ -2,14 +2,12 @@ import React from 'react';
 import Footer from '../components/Footer';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-function Recipes() {
+function Profile() {
   return (
     <div>
-      <div>
-        <h1>Recipes</h1>
-      </div>
+      <h1>Profile</h1>
       <footer
-        className="position-fixed fixed-bottom"
+        className="position-absolute fixed-bottom"
         data-testid="footer"
 
       >
@@ -19,4 +17,4 @@ function Recipes() {
   );
 }
 
-export default Recipes;
+export default Profile;

@@ -4,6 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { Route, Switch } from 'react-router-dom';
 import Login from './pages/Login';
 import Recipes from './pages/Recipes';
+import Profile from './pages/Profile';
 
 function App() {
   return (
@@ -16,6 +17,14 @@ function App() {
       <Route
         path="/meals"
         render={ () => <Recipes /> }
+      />
+      <Route
+        path="/drinks"
+        render={ () => <Recipes /> }
+      />
+      <Route
+        path="/profile"
+        render={ () => <Profile /> }
       />
     </Switch>
   );

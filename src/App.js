@@ -18,8 +18,10 @@ function App() {
         path="/profile"
         render={ () => <Profile /> }
       />
+
       <Route path="/meals" render={ () => <Recipes type="meals" /> } />
       <Route path="/drinks" render={ () => <Recipes type="drinks" /> } />
+
     </Switch>
   );
 }

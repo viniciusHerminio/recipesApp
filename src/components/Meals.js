@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { foodsAPI, foodsCategoryAPI } from '../services/foodsAPI';
+import SearchBar from './SearchBar';
 
 function Recipes() {
   const [foods, setFoods] = useState();
@@ -30,6 +31,7 @@ function Recipes() {
 
   return (
     <div>
+      <SearchBar />
       Foods
       { typeof foodsCategory === typeof [] && foodsCategory.map((item, index) => (
         <button
@@ -53,6 +55,7 @@ function Recipes() {
         </div>
       )) }
     </div>
+
   );
 }
 

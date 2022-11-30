@@ -15,17 +15,11 @@ function App() {
         render={ () => <Login /> }
       />
       <Route
-        path="/meals"
-        render={ () => <Recipes /> }
-      />
-      <Route
-        path="/drinks"
-        render={ () => <Recipes /> }
-      />
-      <Route
         path="/profile"
         render={ () => <Profile /> }
       />
+      <Route path="/meals" render={ () => <Recipes type="meals" /> } />
+      <Route path="/drinks" render={ () => <Recipes type="drinks" /> } />
     </Switch>
   );
 }

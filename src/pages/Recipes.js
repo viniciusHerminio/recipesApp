@@ -1,22 +1,25 @@
-import React from 'react';
+import PropTypes from 'prop-types';
 import Footer from '../components/Footer';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import Meals from '../components/Meals';
+import Drinks from '../components/Drinks';
 
-function Recipes() {
+function Recipes({ type }) {
   return (
     <div>
-      <div>
-        <h1>Recipes</h1>
-      </div>
+      {type === 'meals' ? <Meals /> : <Drinks /> }
       <footer
         className="position-fixed fixed-bottom"
         data-testid="footer"
-
       >
         <Footer />
       </footer>
     </div>
   );
 }
+
+Recipes.propTypes = {
+  type: PropTypes.string.isRequired,
+};
 
 export default Recipes;

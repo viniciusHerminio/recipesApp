@@ -3,10 +3,11 @@ import Footer from '../components/Footer';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Meals from '../components/Meals';
 import Drinks from '../components/Drinks';
+// import '../styles/Recipe.css';
 
 function Recipes({ type }) {
   return (
-    <div>
+    <div id="recipes">
       {type === 'meals' ? <Meals /> : <Drinks /> }
       <footer
         className="position-fixed fixed-bottom"

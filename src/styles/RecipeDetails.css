@@ -1,0 +1,22 @@
+.start-recipe-btn {
+  position: fixed;
+  width: 100%;
+  border: 2px red solid;
+  bottom:  0;
+}
+
+.recipe-item img {
+  width: 360px;
+  position: relative;
+}
+
+.recipe-item h2 {
+  position: absolute;
+  z-index: 20;
+  text-align: center;
+}
+
+.recipe header {
+  position: absolute;
+  z-index: 20;
+}

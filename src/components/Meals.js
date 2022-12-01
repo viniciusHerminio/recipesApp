@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 import { foodsAPI, foodsCategoryAPI } from '../services/foodsAPI';
 
 function Recipes() {
   const [foods, setFoods] = useState();
   const [foodsCategory, setFoodsCategory] = useState();
+  const history = useHistory();
 
   const getInitialFoods = async () => {
     const data = await foodsAPI();
@@ -28,6 +30,10 @@ function Recipes() {
     });
   }, []);
 
+  const handleClick = (id) => {
+    history.push(`/meals/${id}`);
+  };
+
   return (
     <div>
       Foods
@@ -42,7 +48,12 @@ function Recipes() {
       )) }
 
       { typeof foods === typeof [] && foods.map((item, index) => (
-        <div data-testid={ `${index}-recipe-card` } key={ index }>
+        <button
+          data-testid={ `${index}-recipe-card` }
+          type="button"
+          onClick={ () => handleClick(item.idMeal) }
+          key={ index }
+        >
           <img
             src={ item.strMealThumb }
             alt="imagem da receita"
@@ -50,7 +61,8 @@ function Recipes() {
             data-testid={ `${index}-card-img` }
           />
           <span data-testid={ `${index}-card-name` }>{item.strMeal}</span>
-        </div>
+        </button>
+        // </Link>
       )) }
     </div>
   );

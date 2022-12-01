@@ -6,7 +6,7 @@ import Drinks from '../components/Drinks';
 
 function Recipes({ type }) {
   return (
-    <div>
+    <div id="recipes">
       {type === 'meals' ? <Meals /> : <Drinks /> }
       <footer
         className="position-fixed fixed-bottom"

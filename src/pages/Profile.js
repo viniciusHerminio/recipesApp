@@ -2,6 +2,7 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 import Footer from '../components/Footer';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import Header from '../components/Header';
 
 function Profile() {
   const history = useHistory();
@@ -30,6 +31,8 @@ function Profile() {
   return (
     <div>
       <h1>Profile</h1>
+      
+      <Header profileUser>Profile</Header>
 
       <p data-testid="profile-email">{email}</p>
 
@@ -56,7 +59,7 @@ function Profile() {
       >
         Logout
       </button>
-
+      
       <footer
         className="position-absolute fixed-bottom"
         data-testid="footer"

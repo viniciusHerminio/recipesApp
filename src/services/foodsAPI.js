@@ -9,3 +9,9 @@ export const foodsCategoryAPI = async () => {
   const response = await fetch(endpoint).then((res) => res.json());
   return response;
 };
+
+export const fetchFoodById = async (id) => {
+  const url = `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`;
+  const fetching = await fetch(url).then((res) => res.json());
+  return fetching.meals;
+};

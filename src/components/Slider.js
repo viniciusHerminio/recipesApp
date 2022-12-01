@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
-import SliderCard from './SliderCard';
+import PropTypes from 'prop-types';
 import '../styles/Slider.css';
 
 function Slider({ recipes, type }) {
@@ -30,7 +30,6 @@ function Slider({ recipes, type }) {
             key={ `${i}-${recipe}` }
             className="inner-item"
             data-testid={ `${i}-recommendation-card` }
-            // onCli
           >
             <img
               src={ recipe[thumb] }
@@ -46,5 +45,13 @@ function Slider({ recipes, type }) {
     </motion.div>
   );
 }
+
+Slider.propTypes = {
+  recipes: PropTypes.shape({
+    filter: PropTypes.func,
+    map: PropTypes.func,
+  }).isRequired,
+  type: PropTypes.string.isRequired,
+};
 
 export default Slider;

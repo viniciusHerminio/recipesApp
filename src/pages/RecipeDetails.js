@@ -1,14 +1,14 @@
 import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import Footer from '../components/Footer';
-import { fetchDrinksById } from '../services/drinksAPI';
-import { fetchFoodById } from '../services/foodsAPI';
+import { fetchDrinksById, drinksAPI } from '../services/drinksAPI';
+import { fetchFoodById, foodsAPI } from '../services/foodsAPI';
 
 function RecipeDetails({ type, match }) {
   const { id } = match.params;
   const [recipe, setRecipe] = useState([]);
   const [video, setvideo] = useState('');
-  // const [recipes, setRecipes] = useState([]);
+  const [recipes, setRecipes] = useState([]);
   const [ingredients, setIngredients] = useState([]);
   const [measure, setMeasure] = useState([]);
 
@@ -16,11 +16,11 @@ function RecipeDetails({ type, match }) {
     const test = async () => {
       const thisRecipe = await type === 'meals'
         ? await fetchFoodById(id) : await fetchDrinksById(id);
-      // const allRecipes = await type === 'meals'
-        // ? await foodsAPI() : await drinksAPI();
+      const allRecipes = await type === 'meals'
+        ? await drinksAPI() : await foodsAPI();
       setRecipe(thisRecipe[0]);
-      // setRecipes(allRecipes);
-      // console.log(thisRecipe[0  ]);
+      setRecipes(allRecipes);
+      console.log(allRecipes);
       if (type === 'meals') {
         const ytVideo = thisRecipe[0].strYoutube;
         const a = ytVideo.replace('watch?v=', 'embed/');

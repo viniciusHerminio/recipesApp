@@ -1,0 +1,22 @@
+.carousel {
+  cursor: grab;
+  overflow: hidden;
+}
+
+.inner {
+  display: flex;
+  /* overflow: hidden; */
+}
+
+.inner-item {
+  /* min-height: 200px; */
+  max-width: 400px;
+  padding: 14px;
+}
+
+.slider-recipe-img {
+  border: 2px red solid;
+  max-width: 200px;
+  border-radius: 12px;
+  pointer-events: none;
+}

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-// import Footer from '../components/Footer';
+import Slider from '../components/Slider';
 import { fetchDrinksById, drinksAPI } from '../services/drinksAPI';
 import { fetchFoodById, foodsAPI } from '../services/foodsAPI';
 import '../styles/RecipeDetails.css';
@@ -113,6 +113,7 @@ function RecipeDetails({ type, match }) {
             allowFullScreen
           /> : null
         }
+        <Slider recipes={ recipes } type={ type } />
       </section>
       <footer
         className="position-fixed fixed-bottom"

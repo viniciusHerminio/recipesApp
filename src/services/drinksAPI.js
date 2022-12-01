@@ -15,9 +15,3 @@ export const fetchDrinksById = async (id) => {
   const fetching = await fetch(url).then((res) => res.json());
   return fetching.drinks;
 };
-
-// export const fetchDrinksById = async (id) => {
-//   const url = `www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${id}`;
-//   const fetching = await fetch(url).then((res) => res.json());
-//   return fetching.drinks;
-// };

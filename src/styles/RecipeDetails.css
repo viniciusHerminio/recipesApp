@@ -1,19 +1,19 @@
 .start-recipe-btn {
+  border: 2px red solid;
+  bottom: 0;
   position: fixed;
   width: 100%;
-  border: 2px red solid;
-  bottom:  0;
 }
 
 .recipe-item img {
-  width: 360px;
   position: relative;
+  width: 360px;
 }
 
 .recipe-item h2 {
   position: absolute;
-  z-index: 20;
   text-align: center;
+  z-index: 20;
 }
 
 .recipe header {

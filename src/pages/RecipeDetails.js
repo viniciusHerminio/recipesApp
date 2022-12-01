@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import { fetchDrinksById, drinksAPI } from '../services/drinksAPI';
 import { fetchFoodById, foodsAPI } from '../services/foodsAPI';
 import '../styles/RecipeDetails.css';
-import Header from '../components/Header';
 
 function RecipeDetails({ type, match }) {
   const { id } = match.params;
@@ -55,9 +54,6 @@ function RecipeDetails({ type, match }) {
 
   return (
     <main className="recipe">
-      <header>
-        <Header type={ type } />
-      </header>
       <section className="recipe-item">
         <h2
           data-testid="recipe-title"

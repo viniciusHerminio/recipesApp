@@ -3,7 +3,6 @@ import Footer from '../components/Footer';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Meals from '../components/Meals';
 import Drinks from '../components/Drinks';
-// import '../styles/Recipe.css';
 
 function Recipes({ type }) {
   return (

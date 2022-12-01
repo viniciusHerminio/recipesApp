@@ -4,7 +4,7 @@ import RecipesAppContext from './RecipesAppContext';
 
 function RecipesAppProvider({ children }) {
   return (
-    <RecipesAppContext.Provider value={ value }>
+    <RecipesAppContext.Provider>
       <div>
         { children }
       </div>

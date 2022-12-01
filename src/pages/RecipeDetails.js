@@ -5,7 +5,7 @@ import { fetchDrinksById, drinksAPI } from '../services/drinksAPI';
 import { fetchFoodById, foodsAPI } from '../services/foodsAPI';
 import '../styles/RecipeDetails.css';
 
-function RecipeDetails({ type, match }) {
+function RecipeDetails({ type, match, history }) {
   const { id } = match.params;
   const [recipe, setRecipe] = useState([]);
   const [video, setvideo] = useState('');
@@ -51,6 +51,11 @@ function RecipeDetails({ type, match }) {
   const title = type === 'meals' ? recipe.strMeal : recipe.strDrink;
   const thumb = type === 'meals' ? recipe.strMealThumb : recipe.strDrinkThumb;
   const cat = type === 'meals' ? recipe.strCategory : recipe.strAlcoholic;
+
+  const startRecipeClick = () => {
+    // console.log(history.location);
+    history.push(`${history.location.pathname}/in-progress`);
+  };
 
   return (
     <main className="recipe">
@@ -122,6 +127,7 @@ function RecipeDetails({ type, match }) {
           className="start-recipe-btn"
           data-testid="start-recipe-btn"
           type="button"
+          onClick={ startRecipeClick }
         >
           Start Recipe
         </button>
@@ -138,6 +144,12 @@ RecipeDetails.propTypes = {
     }),
   }).isRequired,
   type: PropTypes.string.isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func,
+    location: PropTypes.shape({
+      pathname: PropTypes.string,
+    }),
+  }).isRequired,
 };
 
 export default RecipeDetails;

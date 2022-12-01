@@ -31,11 +31,8 @@ function Profile() {
   return (
     <div>
       <h1>Profile</h1>
-      
       <Header profileUser>Profile</Header>
-
       <p data-testid="profile-email">{email}</p>
-
       <button
         type="button"
         onClick={ redirectPageDoneRecipes }
@@ -43,7 +40,6 @@ function Profile() {
       >
         Done Recipes
       </button>
-
       <button
         type="button"
         onClick={ redirectPageFavoriteRecipes }
@@ -51,7 +47,6 @@ function Profile() {
       >
         Favorite Recipes
       </button>
-
       <button
         type="button"
         onClick={ redirectPageLogout }
@@ -59,11 +54,9 @@ function Profile() {
       >
         Logout
       </button>
-      
       <footer
         className="position-absolute fixed-bottom"
         data-testid="footer"
-
       >
         <Footer />
       </footer>

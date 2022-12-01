@@ -32,17 +32,17 @@ function App() {
         path="/drinks"
         render={ () => <Recipes type="drinks" /> }
       />
-      <Route 
+      <Route
         path="/done-recipes"
         render={ () => <DoneRecipes /> }
       />
-      <Route 
+      <Route
         path="/favorite-recipes"
         render={ () => <FavoriteRecipes /> }
       />
       <Route
         path="/meals/:id"
-        render={ (props) => <RecipeDetails {...props } type="meals" /> }
+        render={ (props) => <RecipeDetails { ...props } type="meals" /> }
       />
       <Route
         path="/drinks/:id"

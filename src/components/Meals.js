@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { foodsAPI, foodsCategoryAPI } from '../services/foodsAPI';
+import Header from './Header';
 
 function Recipes() {
   const [foods, setFoods] = useState();
@@ -30,7 +31,7 @@ function Recipes() {
 
   return (
     <div>
-      Foods
+      <Header profileUser search>Meals</Header>
       { typeof foodsCategory === typeof [] && foodsCategory.map((item, index) => (
         <button
           type="button"

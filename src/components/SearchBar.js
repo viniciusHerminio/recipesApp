@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { radioIngredientsApi, radioNamesApi,
-  radioFirstLetterApi, radioDrinksIngredientsApi, radioDrinksNamesApi,
-  radioDrinksFirstLetterApi } from '../services/radioInputApi';
+  radioFirstLetterApi, /* , radioDrinksIngredientsApi, radioDrinksNamesApi,
+radioDrinksFirstLetterApi */ } from '../services/radioInputApi';
 
 function SearchBar() {
   const { searchInput, setSearchInput } = useState('');
@@ -20,22 +20,22 @@ function SearchBar() {
     radioFirstLetterApi(searchInput);
   };
 
-  const searchClickDrinks = () => {
-    if (radioInput === 'ingredient') {
-      radioDrinksIngredientsApi(searchInput);
-    }
-    if (radioInput === 'name') {
-      radioDrinksNamesApi(searchInput);
-    }
-    if (radioInput === 'first-letter' && searchInput.length > 1) {
-      global.alert('Your search must have only 1 (one) character');
-    }
-    radioDrinksFirstLetterApi(searchInput);
-  };
+  // const searchClickDrinks = () => {
+  //   if (radioInput === 'ingredient') {
+  //     radioDrinksIngredientsApi(searchInput);
+  //   }
+  //   if (radioInput === 'name') {
+  //     radioDrinksNamesApi(searchInput);
+  //   }
+  //   if (radioInput === 'first-letter' && searchInput.length > 1) {
+  //     global.alert('Your search must have only 1 (one) character');
+  //   }
+  //   radioDrinksFirstLetterApi(searchInput);
+  // };
 
-  const HandleClick = () => {
+  // const HandleClick = () => {
 
-  };
+  // };
 
   return (
     <div>

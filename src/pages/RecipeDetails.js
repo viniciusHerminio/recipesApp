@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
+import copy from 'clipboard-copy';
 // import Footer from '../components/Footer';
 import { fetchDrinksById, drinksAPI } from '../services/drinksAPI';
 import { fetchFoodById, foodsAPI } from '../services/foodsAPI';
 import '../styles/RecipeDetails.css';
+import shareIcon from '../images/shareIcon.svg';
 
 function RecipeDetails({ type, match, history }) {
   const { id } = match.params;
@@ -12,6 +14,7 @@ function RecipeDetails({ type, match, history }) {
   const [recipes, setRecipes] = useState([]);
   const [ingredients, setIngredients] = useState([]);
   const [measure, setMeasure] = useState([]);
+  const [copied, setCopied] = useState(false);
 
   useEffect(() => {
     const test = async () => {
@@ -57,6 +60,11 @@ function RecipeDetails({ type, match, history }) {
     history.push(`${history.location.pathname}/in-progress`);
   };
 
+  const shareClick = () => {
+    copy(`http://localhost:3000${history.location.pathname}`);
+    setCopied(true);
+  };
+
   return (
     <main className="recipe">
       <section className="recipe-item">
@@ -77,8 +85,23 @@ function RecipeDetails({ type, match, history }) {
           {' '}
           { cat }
         </p>
-        <button type="button" data-testid="share-btn">Compartilhar</button>
-        <button type="button" data-testid="favorite-btn">Favoritar</button>
+        <div>
+          <button
+            className="share-btn"
+            type="button"
+            data-testid="share-btn"
+            onClick={ shareClick }
+          >
+            <img
+              src={ shareIcon }
+              alt="Share Icon"
+            />
+          </button>
+          { copied && <span>Link copied!</span> }
+          <button className="share-btn" type="button" data-testid="favorite-btn">
+            Favoritar
+          </button>
+        </div>
         <ul>
           Ingredients
           {ingredients.map((ing, index) => {

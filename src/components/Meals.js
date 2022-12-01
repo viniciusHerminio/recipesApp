@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { foodsAPI, foodsCategoryAPI } from '../services/foodsAPI';
+import Header from './Header';
 import SearchBar from './SearchBar';
 
 function Recipes() {
@@ -37,6 +38,7 @@ function Recipes() {
 
   return (
     <div>
+      <Header profileUser search>Meals</Header>
       <SearchBar />
       Foods
       { typeof foodsCategory === typeof [] && foodsCategory.map((item, index) => (

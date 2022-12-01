@@ -5,6 +5,9 @@ import { Route, Switch } from 'react-router-dom';
 import Login from './pages/Login';
 import Recipes from './pages/Recipes';
 import Profile from './pages/Profile';
+import DoneRecipes from './pages/DoneRecipes';
+import FavoriteRecipes from './pages/FavoriteRecipes';
+import RecipeInProgress from './pages/RecipeInProgress';
 import RecipeDetails from './pages/RecipeDetails';
 
 function App() {
@@ -30,12 +33,28 @@ function App() {
         render={ () => <Recipes type="drinks" /> }
       />
       <Route
+        path="/done-recipes"
+        render={ () => <DoneRecipes /> }
+      />
+      <Route
+        path="/favorite-recipes"
+        render={ () => <FavoriteRecipes /> }
+      />
+      <Route
         path="/meals/:id"
         render={ (props) => <RecipeDetails { ...props } type="meals" /> }
       />
       <Route
         path="/drinks/:id"
         render={ (props) => <RecipeDetails { ...props } type="drinks" /> }
+      />
+      <Route
+        path="/meals/:id/in-progress"
+        render={ () => <RecipeInProgress /> }
+      />
+      <Route
+        path="/drinks/:id/in-progress"
+        render={ () => <RecipeInProgress /> }
       />
     </Switch>
   );

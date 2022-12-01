@@ -24,3 +24,7 @@
   position: absolute;
   z-index: 20;
 }
+
+.share-btn img {
+  width: 32px;
+}

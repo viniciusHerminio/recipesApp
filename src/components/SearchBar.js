@@ -1,12 +1,13 @@
 import { useState } from 'react';
 import { radioIngredientsApi, radioNamesApi,
-  radioFirstLetterApi } from '../services/radioInputApi';
+  radioFirstLetterApi, radioDrinksIngredientsApi, radioDrinksNamesApi,
+  radioDrinksFirstLetterApi } from '../services/radioInputApi';
 
 function SearchBar() {
   const { searchInput, setSearchInput } = useState('');
   const { radioInput, setRadioinput } = useState('');
 
-  const searchClick = () => {
+  const searchClickMeals = () => {
     if (radioInput === 'ingredient') {
       radioIngredientsApi(searchInput);
     }
@@ -17,6 +18,23 @@ function SearchBar() {
       global.alert('Your search must have only 1 (one) character');
     }
     radioFirstLetterApi(searchInput);
+  };
+
+  const searchClickDrinks = () => {
+    if (radioInput === 'ingredient') {
+      radioDrinksIngredientsApi(searchInput);
+    }
+    if (radioInput === 'name') {
+      radioDrinksNamesApi(searchInput);
+    }
+    if (radioInput === 'first-letter' && searchInput.length > 1) {
+      global.alert('Your search must have only 1 (one) character');
+    }
+    radioDrinksFirstLetterApi(searchInput);
+  };
+
+  const HandleClick = () => {
+
   };
 
   return (
@@ -66,7 +84,7 @@ function SearchBar() {
       <button
         type="button"
         data-testid="exec-search-btn"
-        onClick={ searchClick }
+        onClick={ searchClickMeals }
       >
         Search
       </button>

@@ -1,42 +1,43 @@
-import { useState } from 'react';
+import { useContext } from 'react';
+import RecipesAppContext from '../context/RecipesAppContext';
 import { radioIngredientsApi, radioNamesApi,
-  radioFirstLetterApi, radioDrinksIngredientsApi, radioDrinksNamesApi,
-  radioDrinksFirstLetterApi } from '../services/radioInputApi';
+  radioFirstLetterApi } from '../services/radioInputApi';
 
 function SearchBar() {
-  const { searchInput, setSearchInput } = useState('');
-  const { radioInput, setRadioinput } = useState('');
+  const { searchInput,
+    radioInput,
+    setRadioinput } = useContext(RecipesAppContext);
 
-  const searchClickMeals = () => {
+  const searchClickMeals = async () => {
     if (radioInput === 'ingredient') {
-      radioIngredientsApi(searchInput);
+      await radioIngredientsApi(searchInput);
     }
     if (radioInput === 'name') {
-      radioNamesApi(searchInput);
+      await radioNamesApi(searchInput);
     }
     if (radioInput === 'first-letter' && searchInput.length > 1) {
-      global.alert('Your search must have only 1 (one) character');
+      return global.alert('Your search must have only 1 (one) character');
     }
-    radioFirstLetterApi(searchInput);
+    await radioFirstLetterApi(searchInput);
   };
 
-  const searchClickDrinks = () => {
-    if (radioInput === 'ingredient') {
-      radioDrinksIngredientsApi(searchInput);
-    }
-    if (radioInput === 'name') {
-      radioDrinksNamesApi(searchInput);
-    }
-    if (radioInput === 'first-letter' && searchInput.length > 1) {
-      global.alert('Your search must have only 1 (one) character');
-    }
-    radioDrinksFirstLetterApi(searchInput);
-  };
-
-  const HandleClick = () => {
-
-  };
-
+  // const searchClickDrinks = () => {
+  //  if (radioInput === 'ingredient') {
+  //    radioDrinksIngredientsApi(searchInput);
+  //  }
+  //  if (radioInput === 'name') {
+  //    radioDrinksNamesApi(searchInput);
+  //  }
+  //  if (radioInput === 'first-letter' && searchInput.length > 1) {
+  //    global.alert('Your search must have only 1 (one) character');
+  //  }
+  //  radioDrinksFirstLetterApi(searchInput);
+  // };
+  //
+  // const HandleClick = () => {
+  //
+  // };
+  // console.log(setRadioinput);
   return (
     <div>
       <label htmlFor="ingredient">
@@ -72,15 +73,7 @@ function SearchBar() {
           onChange={ ({ target: { value } }) => setRadioinput(value) }
         />
       </label>
-      <label htmlFor="search-input">
-        <input
-          type="text"
-          data-testid="search-input"
-          name="search-input"
-          value={ searchInput }
-          onChange={ ({ target: { value } }) => setSearchInput(value) }
-        />
-      </label>
+
       <button
         type="button"
         data-testid="exec-search-btn"

@@ -1,17 +1,19 @@
 import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-// import Footer from '../components/Footer';
+import Slider from '../components/Slider';
 import { fetchDrinksById, drinksAPI } from '../services/drinksAPI';
 import { fetchFoodById, foodsAPI } from '../services/foodsAPI';
 import '../styles/RecipeDetails.css';
+import shareIcon from '../images/shareIcon.svg';
 
-function RecipeDetails({ type, match }) {
+function RecipeDetails({ type, match, history }) {
   const { id } = match.params;
   const [recipe, setRecipe] = useState([]);
   const [video, setvideo] = useState('');
   const [recipes, setRecipes] = useState([]);
   const [ingredients, setIngredients] = useState([]);
   const [measure, setMeasure] = useState([]);
+  const [copied, setCopied] = useState(false);
 
   useEffect(() => {
     const test = async () => {
@@ -52,6 +54,16 @@ function RecipeDetails({ type, match }) {
   const thumb = type === 'meals' ? recipe.strMealThumb : recipe.strDrinkThumb;
   const cat = type === 'meals' ? recipe.strCategory : recipe.strAlcoholic;
 
+  const startRecipeClick = () => {
+    // console.log(history.location);
+    history.push(`${history.location.pathname}/in-progress`);
+  };
+
+  const shareClick = () => {
+    copy(`http://localhost:3000${history.location.pathname}`);
+    setCopied(true);
+  };
+
   return (
     <main className="recipe">
       <section className="recipe-item">
@@ -72,6 +84,23 @@ function RecipeDetails({ type, match }) {
           {' '}
           { cat }
         </p>
+        <div>
+          <button
+            className="share-btn"
+            type="button"
+            data-testid="share-btn"
+            onClick={ shareClick }
+          >
+            <img
+              src={ shareIcon }
+              alt="Share Icon"
+            />
+          </button>
+          { copied && <span>Link copied!</span> }
+          <button className="share-btn" type="button" data-testid="favorite-btn">
+            Favoritar
+          </button>
+        </div>
         <ul>
           Ingredients
           {ingredients.map((ing, index) => {
@@ -113,6 +142,7 @@ function RecipeDetails({ type, match }) {
             allowFullScreen
           /> : null
         }
+        <Slider recipes={ recipes } type={ type } />
       </section>
       <footer
         className="position-fixed fixed-bottom"
@@ -122,6 +152,7 @@ function RecipeDetails({ type, match }) {
           className="start-recipe-btn"
           data-testid="start-recipe-btn"
           type="button"
+          onClick={ startRecipeClick }
         >
           Start Recipe
         </button>
@@ -138,6 +169,12 @@ RecipeDetails.propTypes = {
     }),
   }).isRequired,
   type: PropTypes.string.isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func,
+    location: PropTypes.shape({
+      pathname: PropTypes.string,
+    }),
+  }).isRequired,
 };
 
 export default RecipeDetails;

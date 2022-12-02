@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { radioIngredientsApi, radioNamesApi,
-  radioFirstLetterApi, /* , radioDrinksIngredientsApi, radioDrinksNamesApi,
+import { radioIngredientsApi, radioNamesApi, radioFirstLetterApi,
+/* , radioDrinksIngredientsApi, radioDrinksNamesApi,
 radioDrinksFirstLetterApi */ } from '../services/radioInputApi';
 
 function SearchBar() {
@@ -34,7 +34,6 @@ function SearchBar() {
   // };
 
   // const HandleClick = () => {
-
   // };
 
   return (

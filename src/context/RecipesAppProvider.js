@@ -1,10 +1,20 @@
-// import { useState, useEffect, useMemo } from 'react';
+import { useState, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import RecipesAppContext from './RecipesAppContext';
 
 function RecipesAppProvider({ children }) {
+  const [inProgress, setInProgress] = useState([]);
+  const [type, setType] = useState('');
+
+  const value = useMemo(() => ({
+    inProgress,
+    setInProgress,
+    type,
+    setType,
+  }), [inProgress, type]);
+
   return (
-    <RecipesAppContext.Provider>
+    <RecipesAppContext.Provider value={ value }>
       <div>
         { children }
       </div>

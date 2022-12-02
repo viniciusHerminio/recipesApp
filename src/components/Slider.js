@@ -17,7 +17,6 @@ function Slider({ recipes, type }) {
   return (
     <motion.div
       className="carousel"
-      whileTop={ { cursor: 'grabbing' } }
       ref={ carousel }
     >
       <motion.div

@@ -1,8 +1,25 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 
-function CheckBox({ ing, measure, index }) {
+function CheckBox({
+  ing, measure, index, setIngredientsProgress, ingredientsProgress, title, allIngs }) {
   const [itsChecked, setItsChecked] = useState(false);
+  // const [a, setA] = useState([]);
+
+  const handleCheck = () => {
+    const arrIngred = allIngs;
+    arrIngred[index] = !itsChecked;
+    setItsChecked(!itsChecked);
+    setIngredientsProgress(arrIngred);
+    const objThisRecipeIng = { [title]: arrIngred };
+    localStorage.setItem('inProgressRecipes', JSON.stringify(objThisRecipeIng));
+    // console.log(arrIngred);
+  };
+
+  useEffect(() => {
+    setItsChecked(ingredientsProgress);
+  }, [ingredientsProgress]);
+
   return (
     <li>
       <label
@@ -12,21 +29,32 @@ function CheckBox({ ing, measure, index }) {
         <input
           type="checkbox"
           id={ ing }
-          onChange={ () => setItsChecked(!itsChecked) }
+          onChange={ () => handleCheck() }
           checked={ itsChecked }
         />
-        { ing }
-        {' '}
-        { measure }
+        <span>
+          { ing }
+          {' '}
+          { measure }
+        </span>
       </label>
     </li>
   );
 }
 
+CheckBox.defaultProps = {
+  measure: '',
+  ing: 'Loading...',
+};
+
 CheckBox.propTypes = {
-  ing: PropTypes.string.isRequired,
-  measure: PropTypes.string.isRequired,
+  ing: PropTypes.string,
+  measure: PropTypes.string,
   index: PropTypes.number.isRequired,
+  setIngredientsProgress: PropTypes.func.isRequired,
+  ingredientsProgress: PropTypes.bool.isRequired,
+  title: PropTypes.string.isRequired,
+  allIngs: PropTypes.shape({}).isRequired,
 };
 
 export default CheckBox;

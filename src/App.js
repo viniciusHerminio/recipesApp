@@ -52,11 +52,11 @@ function App() {
       />
       <Route
         path="/meals/:id/in-progress"
-        render={ () => <RecipeInProgress /> }
+        render={ () => <RecipeInProgress type="meals" /> }
       />
       <Route
         path="/drinks/:id/in-progress"
-        render={ () => <RecipeInProgress /> }
+        render={ () => <RecipeInProgress type="drinks" /> }
       />
     </Switch>
   );

@@ -49,7 +49,6 @@ function Recipes() {
       )) }
 
       { typeof drinks === typeof [] && drinks.map((item, index) => (
-        // <Link key={ index } to={ `/drinks/${item.idDrink} ` }>
         <button
           data-testid={ `${index}-recipe-card` }
           key={ index }
@@ -64,7 +63,6 @@ function Recipes() {
           />
           <span data-testid={ `${index}-card-name` }>{item.strDrink}</span>
         </button>
-        // </Link>
       )) }
     </div>
   );

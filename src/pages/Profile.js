@@ -20,22 +20,16 @@ function Profile() {
     history.push('/');
   };
 
-  const getEmail = () => {
-    const value = localStorage.getItem('user');
-    const emailTratamento = JSON.parse(value);
-    const { email } = emailTratamento;
-    return email;
-  };
-  const email = getEmail();
+  const mail = JSON.parse(localStorage.getItem('user'));
 
   return (
     <div>
-      <h1>Profile</h1>
-      
       <Header profileUser>Profile</Header>
-
-      <p data-testid="profile-email">{email}</p>
-
+      { localStorage.getItem('user') !== null ? (
+        <p data-testid="profile-email">
+          { mail.email }
+        </p>)
+        : null}
       <button
         type="button"
         onClick={ redirectPageDoneRecipes }
@@ -43,7 +37,6 @@ function Profile() {
       >
         Done Recipes
       </button>
-
       <button
         type="button"
         onClick={ redirectPageFavoriteRecipes }
@@ -51,7 +44,6 @@ function Profile() {
       >
         Favorite Recipes
       </button>
-
       <button
         type="button"
         onClick={ redirectPageLogout }
@@ -59,11 +51,9 @@ function Profile() {
       >
         Logout
       </button>
-      
       <footer
         className="position-absolute fixed-bottom"
         data-testid="footer"
-
       >
         <Footer />
       </footer>

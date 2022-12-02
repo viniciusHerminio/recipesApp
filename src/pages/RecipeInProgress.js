@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import CheckBox from '../components/CheckBox';
 import { fetchDrinksById } from '../services/drinksAPI';
 import { fetchFoodById } from '../services/foodsAPI';
 
@@ -34,6 +36,10 @@ function RecipeInProgress({ type }) {
     };
     getIngredients();
   }, [thisRecipe]);
+
+  const handleFinish = () => {
+    history.push('/done-recipes');
+  };
 
   const title = type === 'meals' ? thisRecipe.strMeal : thisRecipe.strDrink;
   const thumb = type === 'meals' ? thisRecipe.strMealThumb : thisRecipe.strDrinkThumb;
@@ -72,27 +78,30 @@ function RecipeInProgress({ type }) {
       </p>
       <ul>
         Ingredients
-        {ingredient.map((ing, index) => (
-          ing === null || ing === '' ? null : (
-            <li key={ `${index}-ingredient-step` }>
-              <label
-                data-testid={ `${index}-ingredient-step` }
-                htmlFor={ ing }
-              >
-                <input
-                  type="checkbox"
-                  id={ ing }
-                />
-                { ing }
-                {' '}
-                { measure[index] }
-              </label>
-            </li>)
-        ))}
+        {ingredient.map((ing, index) => {
+          if (type === 'meals') {
+            return ing !== '' ? (
+              <CheckBox
+                ing={ ing }
+                measure={ measure[index] }
+                key={ `${index}-ingredient-step` }
+                index={ index }
+              />
+            ) : null;
+          }
+          return ing === null || ing === '' ? null : (
+            <CheckBox
+              ing={ ing }
+              measure={ measure[index] }
+              key={ `${index}-ingredient-step` }
+              index={ index }
+            />);
+        })}
       </ul>
       <button
         data-testid="finish-recipe-btn"
         type="button"
+        onClick={ () => handleFinish() }
       >
         FINISH
       </button>
@@ -100,5 +109,9 @@ function RecipeInProgress({ type }) {
     </main>
   );
 }
+
+RecipeInProgress.propTypes = {
+  type: PropTypes.func.isRequired,
+};
 
 export default RecipeInProgress;

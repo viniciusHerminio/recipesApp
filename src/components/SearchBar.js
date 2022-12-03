@@ -9,23 +9,16 @@ function SearchBar() {
     setRadioinput } = useContext(RecipesAppContext);
 
   const searchClickMeals = async () => {
-    if (radioInput === 'ingredient') {
-      await radioIngredientsApi(searchInput);
-    }
-    if (radioInput === 'name') {
-      await radioNamesApi(searchInput);
-    }
-    // eslint-disable-next-line sonarjs/no-collapsible-if
+    // console.log(searchInput);
+    if (radioInput === 'ingredient') await radioIngredientsApi(searchInput);
+    if (radioInput === 'name') await radioNamesApi(searchInput);
     if (radioInput === 'first-letter') {
       if (searchInput.length > 1) {
-        return global.alert('Your search must have only 1 (one) character');
+        global.alert('Your search must have only 1 (one) character');
+      } else {
+        await radioFirstLetterApi(searchInput);
       }
-      await radioFirstLetterApi(searchInput);
     }
-
-  };
-
-    radioFirstLetterApi(searchInput);
   };
 
   // const searchClickDrinks = () => {
@@ -43,7 +36,7 @@ function SearchBar() {
 
   // const HandleClick = () => {
   // };
-  
+
   // console.log(setRadioinput);
   return (
     <div>
@@ -52,7 +45,7 @@ function SearchBar() {
         <input
           type="radio"
           data-testid="ingredient-search-radio"
-          name="ingedient"
+          name="searchBar"
           value="ingredient"
           // checked={}
           onChange={ ({ target: { value } }) => setRadioinput(value) }
@@ -63,7 +56,7 @@ function SearchBar() {
         <input
           type="radio"
           data-testid="name-search-radio"
-          name="name"
+          name="searchBar"
           value="name"
           // checked={}
           onChange={ ({ target: { value } }) => setRadioinput(value) }
@@ -74,7 +67,7 @@ function SearchBar() {
         <input
           type="radio"
           data-testid="first-letter-search-radio"
-          name="firs-letter"
+          name="searchBar"
           value="first-letter"
           // checked={}
           onChange={ ({ target: { value } }) => setRadioinput(value) }

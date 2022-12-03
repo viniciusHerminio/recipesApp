@@ -1,10 +1,12 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import iconProfile from '../images/profileIcon.svg';
 import iconSearch from '../images/searchIcon.svg';
+import RecipesAppContext from '../context/RecipesAppContext';
 
 function Header({ search, profileUser, children }) {
   const [searching, setSearching] = useState(false);
+  const { setSearchInput } = useContext(RecipesAppContext);
   return (
     <div>
       {profileUser && (
@@ -17,7 +19,11 @@ function Header({ search, profileUser, children }) {
           <img alt="iconSearch" src={ iconSearch } data-testid="search-top-btn" />
         </button>
       )}
-      {searching && <input type="text" data-testid="search-input" />}
+      {searching && <input
+        type="text"
+        data-testid="search-input"
+        onChange={ ({ target: { value } }) => setSearchInput(value) }
+      />}
       <p data-testid="page-title">{children}</p>
     </div>
   );

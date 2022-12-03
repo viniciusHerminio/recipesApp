@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import CheckBox from '../components/CheckBox';
@@ -6,9 +6,11 @@ import { fetchDrinksById } from '../services/drinksAPI';
 import { fetchFoodById } from '../services/foodsAPI';
 import '../styles/RecipeInProgress.css';
 import FavBtn from '../components/FavBtn';
+import RecipesAppContext from '../context/RecipesAppContext';
 
 function RecipeInProgress({ type }) {
   const history = useHistory();
+  const { isDisabled, setDisabled } = useContext(RecipesAppContext);
   const [thisRecipe, setThisRecipe] = useState({});
   const [measure, setMeasure] = useState([]);
   const [ingredient, setIngredient] = useState([]);
@@ -17,10 +19,7 @@ function RecipeInProgress({ type }) {
   const title = type === 'meals' ? thisRecipe.strMeal : thisRecipe.strDrink;
   const thumb = type === 'meals' ? thisRecipe.strMealThumb : thisRecipe.strDrinkThumb;
   const cat = type === 'meals' ? thisRecipe.strCategory : thisRecipe.strAlcoholic;
-  const obj = {
-    drinks: [],
-    meals: [],
-  };
+
   const [copied, setCopied] = useState(false);
 
   useEffect(() => {
@@ -35,10 +34,10 @@ function RecipeInProgress({ type }) {
   }, []);
 
   useEffect(() => {
-    const arrIng = [];
-    const arrMeasure = [];
     const fifth = 15;
     const getIngredients = async () => {
+      const arrIng = [];
+      const arrMeasure = [];
       for (let i = 1; i <= fifth; i += 1) {
         arrIng.push(thisRecipe[`strIngredient${i}`]);
         arrMeasure.push(thisRecipe[`strMeasure${i}`]);
@@ -53,9 +52,14 @@ function RecipeInProgress({ type }) {
         const a = JSON.parse(localStorage.getItem('inProgressRecipes'))[title];
         if (a) {
           setIngredientsProgress(a);
+          const ings = [];
+          for (let i = 1; i <= fifth; i += 1) {
+            ings.push(thisRecipe[`strIngredient${i}`]);
+          }
+          setDisabled((ings
+            .filter((az) => az !== '' && az !== null).length !== a
+            .filter((az) => az === true).length));
         }
-      } else {
-        localStorage.setItem('inProgressRecipes', JSON.stringify(obj));
       }
     };
     recipesInProg();
@@ -76,7 +80,6 @@ function RecipeInProgress({ type }) {
 
   return (
     <main id="recipe-in-progress">
-      {/* {console.log(window.location.href)} */}
       {loading || title === undefined ? <p>LOADING...</p> : (
         <>
           <h2 data-testid="recipe-title">
@@ -114,22 +117,8 @@ function RecipeInProgress({ type }) {
           { measure === undefined ? <h2>Loading...</h2> : (
             <ul>
               Ingredients
-              {ingredient.map((ing, index) => {
-                if (type === 'meals') {
-                  return ing !== '' ? (
-                    <CheckBox
-                      ing={ ing }
-                      measure={ measure[index] }
-                      key={ `${index}-ingredient-step` }
-                      index={ index }
-                      setIngredientsProgress={ setIngredientsProgress }
-                      title={ title }
-                      ingredientsProgress={ ingredientsProgress[index] === true }
-                      allIngs={ ingredientsProgress }
-                    />
-                  ) : null;
-                }
-                return ing === null || ing === '' ? null : (
+              {ingredient.map((ing, index) => (
+                ing !== '' && ing !== null ? (
                   <CheckBox
                     ing={ ing }
                     measure={ measure[index] }
@@ -139,13 +128,15 @@ function RecipeInProgress({ type }) {
                     title={ title }
                     ingredientsProgress={ ingredientsProgress[index] === true }
                     allIngs={ ingredientsProgress }
-                  />);
-              })}
+                    ings={ ingredient }
+                  />) : null
+              ))}
             </ul>)}
           <button
             data-testid="finish-recipe-btn"
             type="button"
             onClick={ () => handleFinish() }
+            disabled={ isDisabled }
           >
             FINISH
           </button>

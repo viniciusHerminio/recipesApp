@@ -1,10 +1,29 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
+import RecipesAppContext from '../context/RecipesAppContext';
 
 function CheckBox({
-  ing, measure, index, setIngredientsProgress, ingredientsProgress, title, allIngs }) {
+  ing,
+  measure,
+  index,
+  setIngredientsProgress,
+  ingredientsProgress,
+  title,
+  allIngs,
+  ings,
+}) {
   const [itsChecked, setItsChecked] = useState(false);
-  // const [a, setA] = useState([]);
+  const { setDisabled } = useContext(RecipesAppContext);
+
+  const handleFinishBtn = () => {
+    if (allIngs
+      .filter((cc) => cc === true).length === ings
+      .filter((az) => az !== '' && az !== null).length) {
+      setDisabled(false);
+    } else {
+      setDisabled(true);
+    }
+  };
 
   const handleCheck = () => {
     const arrIngred = allIngs;
@@ -13,7 +32,7 @@ function CheckBox({
     setIngredientsProgress(arrIngred);
     const objThisRecipeIng = { [title]: arrIngred };
     localStorage.setItem('inProgressRecipes', JSON.stringify(objThisRecipeIng));
-    // console.log(arrIngred);
+    handleFinishBtn();
   };
 
   useEffect(() => {
@@ -54,7 +73,12 @@ CheckBox.propTypes = {
   setIngredientsProgress: PropTypes.func.isRequired,
   ingredientsProgress: PropTypes.bool.isRequired,
   title: PropTypes.string.isRequired,
-  allIngs: PropTypes.shape({}).isRequired,
+  allIngs: PropTypes.shape({
+    filter: PropTypes.func,
+  }).isRequired,
+  ings: PropTypes.shape({
+    filter: PropTypes.func,
+  }).isRequired,
 };
 
 export default CheckBox;

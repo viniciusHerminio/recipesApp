@@ -15,7 +15,7 @@ function RecipeDetails({ type, match, history }) {
   const [ingredients, setIngredients] = useState([]);
   const [measure, setMeasure] = useState([]);
   const [copied, setCopied] = useState(false);
-  const { setInProgress, setType } = useContext(RecipesAppContext);
+  const { setInProgress } = useContext(RecipesAppContext);
 
   useEffect(() => {
     const test = async () => {
@@ -32,7 +32,6 @@ function RecipeDetails({ type, match, history }) {
         setvideo(a);
       }
     };
-    // console.log(recipes);
     test();
   }, [id]);
 
@@ -58,7 +57,6 @@ function RecipeDetails({ type, match, history }) {
 
   const startRecipeClick = () => {
     setInProgress(recipe);
-    setType(type);
     history.push(`${history.location.pathname}/in-progress`);
   };
 

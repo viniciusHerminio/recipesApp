@@ -5,6 +5,7 @@ import CheckBox from '../components/CheckBox';
 import { fetchDrinksById } from '../services/drinksAPI';
 import { fetchFoodById } from '../services/foodsAPI';
 import '../styles/RecipeInProgress.css';
+import FavBtn from '../components/FavBtn';
 
 function RecipeInProgress({ type }) {
   const history = useHistory();
@@ -20,6 +21,7 @@ function RecipeInProgress({ type }) {
     drinks: [],
     meals: [],
   };
+  const [copied, setCopied] = useState(false);
 
   useEffect(() => {
     const getIbyPath = async () => {
@@ -30,13 +32,6 @@ function RecipeInProgress({ type }) {
       setThisRecipe(recipe[0]);
     };
     getIbyPath();
-    // const gettingLocalStorage = () => {
-    //   const localRecipes = localStorage.getItem('inProgressRecipes');
-    //   if (localRecipes !== null) {
-    //     setInProgressRecipes(JSON.parse(localRecipes));
-    //   }
-    // };
-    // gettingLocalStorage();
   }, []);
 
   useEffect(() => {
@@ -53,45 +48,54 @@ function RecipeInProgress({ type }) {
     };
     getIngredients();
     setLoading(false);
-    const recpsInProg = async () => {
-      // const recpsinprog = JSON.parse(localStorage.getItem('inProgressRecipes'));
+    const recipesInProg = async () => {
       if (JSON.parse(localStorage.getItem('inProgressRecipes'))) {
         const a = JSON.parse(localStorage.getItem('inProgressRecipes'))[title];
         if (a) {
           setIngredientsProgress(a);
-          // setverifyRecipe(a);
         }
-        // setIngredientsProgress(a);
       } else {
         localStorage.setItem('inProgressRecipes', JSON.stringify(obj));
       }
     };
-    recpsInProg();
+    recipesInProg();
   }, [thisRecipe]);
 
   const handleFinish = () => {
     history.push('/done-recipes');
   };
 
+  const copyLink = () => {
+    const time = 3000;
+    const allUrl = window.location.href;
+    const recipeUrl = allUrl.replace('/in-progress', '');
+    navigator.clipboard.writeText(recipeUrl);
+    setCopied('Link copied!');
+    setTimeout(() => setCopied(false), time);
+  };
+
   return (
     <main id="recipe-in-progress">
+      {/* {console.log(window.location.href)} */}
       {loading || title === undefined ? <p>LOADING...</p> : (
         <>
           <h2 data-testid="recipe-title">
             { title }
           </h2>
-          <button
-            data-testid="favorite-btn"
-            type="button"
-          >
-            FAV
-          </button>
+          <FavBtn
+            type={ type }
+            thisRecipe={ thisRecipe }
+            title={ title }
+            thumb={ thumb }
+          />
           <button
             data-testid="share-btn"
             type="button"
+            onClick={ copyLink }
           >
             SHARE
           </button>
+          { copied && <p>Link copied!</p> }
           <img
             src={ thumb }
             alt={ title }

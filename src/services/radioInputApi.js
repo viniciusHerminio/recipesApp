@@ -1,5 +1,5 @@
 export const radioIngredientsApi = async (ingrediente) => {
-  const response = await fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?i=${ingrediente}`);
+  const response = await fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${ingrediente}`);
   const results = await response.json();
   console.log(results);
   return results;
@@ -20,7 +20,7 @@ export const radioFirstLetterApi = async (primeiraLetra) => {
 export const radioDrinksIngredientsApi = async (ingrediente) => {
   const response = await fetch(`https://www.thecocktaildb.com/api/json/v1/1/filter.php?i=${ingrediente}`);
   const results = await response.json();
-  console.log(results);
+  // console.log(results);
   return results;
 };
 

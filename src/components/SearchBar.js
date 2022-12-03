@@ -1,23 +1,24 @@
-import { useState } from 'react';
-import { radioIngredientsApi, radioNamesApi, radioFirstLetterApi,
-/* , radioDrinksIngredientsApi, radioDrinksNamesApi,
-radioDrinksFirstLetterApi */ } from '../services/radioInputApi';
+import { useContext } from 'react';
+import RecipesAppContext from '../context/RecipesAppContext';
+import { radioIngredientsApi, radioNamesApi,
+  radioFirstLetterApi } from '../services/radioInputApi';
 
 function SearchBar() {
-  const { searchInput, setSearchInput } = useState('');
-  const { radioInput, setRadioinput } = useState('');
+  const { searchInput,
+    radioInput,
+    setRadioinput } = useContext(RecipesAppContext);
 
-  const searchClickMeals = () => {
-    if (radioInput === 'ingredient') {
-      radioIngredientsApi(searchInput);
+  const searchClickMeals = async () => {
+    // console.log(searchInput);
+    if (radioInput === 'ingredient') await radioIngredientsApi(searchInput);
+    if (radioInput === 'name') await radioNamesApi(searchInput);
+    if (radioInput === 'first-letter') {
+      if (searchInput.length > 1) {
+        global.alert('Your search must have only 1 (one) character');
+      } else {
+        await radioFirstLetterApi(searchInput);
+      }
     }
-    if (radioInput === 'name') {
-      radioNamesApi(searchInput);
-    }
-    if (radioInput === 'first-letter' && searchInput.length > 1) {
-      global.alert('Your search must have only 1 (one) character');
-    }
-    radioFirstLetterApi(searchInput);
   };
 
   // const searchClickDrinks = () => {
@@ -36,6 +37,7 @@ function SearchBar() {
   // const HandleClick = () => {
   // };
 
+  // console.log(setRadioinput);
   return (
     <div>
       <label htmlFor="ingredient">
@@ -43,7 +45,7 @@ function SearchBar() {
         <input
           type="radio"
           data-testid="ingredient-search-radio"
-          name="ingedient"
+          name="searchBar"
           value="ingredient"
           // checked={}
           onChange={ ({ target: { value } }) => setRadioinput(value) }
@@ -54,7 +56,7 @@ function SearchBar() {
         <input
           type="radio"
           data-testid="name-search-radio"
-          name="name"
+          name="searchBar"
           value="name"
           // checked={}
           onChange={ ({ target: { value } }) => setRadioinput(value) }
@@ -65,21 +67,13 @@ function SearchBar() {
         <input
           type="radio"
           data-testid="first-letter-search-radio"
-          name="firs-letter"
+          name="searchBar"
           value="first-letter"
           // checked={}
           onChange={ ({ target: { value } }) => setRadioinput(value) }
         />
       </label>
-      <label htmlFor="search-input">
-        <input
-          type="text"
-          data-testid="search-input"
-          name="search-input"
-          value={ searchInput }
-          onChange={ ({ target: { value } }) => setSearchInput(value) }
-        />
-      </label>
+
       <button
         type="button"
         data-testid="exec-search-btn"

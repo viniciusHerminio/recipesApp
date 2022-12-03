@@ -15,10 +15,13 @@ function SearchBar() {
     if (radioInput === 'name') {
       await radioNamesApi(searchInput);
     }
-    if (radioInput === 'first-letter' && searchInput.length > 1) {
-      return global.alert('Your search must have only 1 (one) character');
+    // eslint-disable-next-line sonarjs/no-collapsible-if
+    if (radioInput === 'first-letter') {
+      if (searchInput.length > 1) {
+        return global.alert('Your search must have only 1 (one) character');
+      }
+      await radioFirstLetterApi(searchInput);
     }
-    await radioFirstLetterApi(searchInput);
   };
 
   // const searchClickDrinks = () => {

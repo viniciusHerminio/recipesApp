@@ -3,18 +3,26 @@ import PropTypes from 'prop-types';
 import RecipesAppContext from './RecipesAppContext';
 
 function RecipesAppProvider({ children }) {
+
   const [searchInput, setSearchInput] = useState('');
   const [radioInput, setRadioinput] = useState('');
+  const [inProgress, setInProgress] = useState([]);
+  const [type, setType] = useState('');
 
   const value = useMemo(() => ({
     searchInput,
     setSearchInput,
     radioInput,
     setRadioinput,
+    inProgress,
+    setInProgress,
+    type,
+    setType,
   }), [searchInput,
     setSearchInput,
     radioInput,
-    setRadioinput]);
+    setRadioinput, inProgress, type]);
+   
 
   return (
     <RecipesAppContext.Provider value={ value }>

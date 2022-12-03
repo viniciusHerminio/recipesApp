@@ -22,24 +22,28 @@ function SearchBar() {
       }
       await radioFirstLetterApi(searchInput);
     }
+
+  };
+
+    radioFirstLetterApi(searchInput);
   };
 
   // const searchClickDrinks = () => {
-  //  if (radioInput === 'ingredient') {
-  //    radioDrinksIngredientsApi(searchInput);
-  //  }
-  //  if (radioInput === 'name') {
-  //    radioDrinksNamesApi(searchInput);
-  //  }
-  //  if (radioInput === 'first-letter' && searchInput.length > 1) {
-  //    global.alert('Your search must have only 1 (one) character');
-  //  }
-  //  radioDrinksFirstLetterApi(searchInput);
+  //   if (radioInput === 'ingredient') {
+  //     radioDrinksIngredientsApi(searchInput);
+  //   }
+  //   if (radioInput === 'name') {
+  //     radioDrinksNamesApi(searchInput);
+  //   }
+  //   if (radioInput === 'first-letter' && searchInput.length > 1) {
+  //     global.alert('Your search must have only 1 (one) character');
+  //   }
+  //   radioDrinksFirstLetterApi(searchInput);
   // };
-  //
+
   // const HandleClick = () => {
-  //
   // };
+  
   // console.log(setRadioinput);
   return (
     <div>

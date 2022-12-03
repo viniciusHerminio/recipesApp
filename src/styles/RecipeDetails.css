@@ -5,6 +5,10 @@
   width: 100%;
 }
 
+.recipe-item {
+  margin-bottom: 30px;
+}
+
 .recipe-item img {
   position: relative;
   width: 360px;
@@ -19,4 +23,8 @@
 .recipe header {
   position: absolute;
   z-index: 20;
+}
+
+.share-btn img {
+  width: 32px;
 }

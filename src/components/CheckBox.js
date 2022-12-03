@@ -14,6 +14,7 @@ function CheckBox({
 }) {
   const [itsChecked, setItsChecked] = useState(false);
   const { setDisabled } = useContext(RecipesAppContext);
+  // const [line, setLine ] = useState(false);
 
   const handleFinishBtn = () => {
     if (allIngs
@@ -44,11 +45,12 @@ function CheckBox({
       <label
         data-testid={ `${index}-ingredient-step` }
         htmlFor={ ing }
+        className={ itsChecked ? 'itsChecked' : '' }
       >
         <input
           type="checkbox"
           id={ ing }
-          onChange={ () => handleCheck() }
+          onChange={ handleCheck }
           checked={ itsChecked }
         />
         <span>

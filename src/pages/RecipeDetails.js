@@ -9,6 +9,7 @@ import '../styles/RecipeDetails.css';
 import shareIcon from '../images/shareIcon.svg';
 import RecipesAppContext from '../context/RecipesAppContext';
 import whiteHeartIcon from '../images/whiteHeartIcon.svg';
+import blackHeartIcon from '../images/blackHeartIcon.svg';
 
 function RecipeDetails({ type, match, history }) {
   const { id } = match.params;
@@ -18,6 +19,7 @@ function RecipeDetails({ type, match, history }) {
   const [ingredients, setIngredients] = useState([]);
   const [measure, setMeasure] = useState([]);
   const [copied, setCopied] = useState(false);
+  const [favorited, setFavorited] = useState(false);
   const { setInProgress } = useContext(RecipesAppContext);
 
   useEffect(() => {
@@ -36,6 +38,14 @@ function RecipeDetails({ type, match, history }) {
       }
     };
     test();
+    if (localStorage.getItem('favoriteRecipes')) {
+      const favorites = JSON.parse(localStorage.getItem('favoriteRecipes'));
+      // console.log(favorites);
+      const isFovorite = favorites.some((item) => item.id === id);
+      if (isFovorite) {
+        setFavorited(true);
+      }
+    }
   }, [id]);
 
   useEffect(() => {
@@ -90,6 +100,7 @@ function RecipeDetails({ type, match, history }) {
       const favs = [favorite];
       saveFav(JSON.stringify(favs));
     }
+    setFavorited(!favorited);
   };
 
   return (
@@ -128,10 +139,13 @@ function RecipeDetails({ type, match, history }) {
           <button
             className="share-btn"
             type="button"
-            data-testid="favorite-btn"
             onClick={ favoriteClick }
           >
-            <img src={ whiteHeartIcon } alt="Favorite Icon" />
+            <img
+              data-testid="favorite-btn"
+              src={ favorited ? blackHeartIcon : whiteHeartIcon }
+              alt="Favorite Icon"
+            />
           </button>
         </div>
         <ul>

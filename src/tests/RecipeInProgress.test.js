@@ -74,8 +74,6 @@ describe('Testa o componente RecipeInProgress com meals se', () => {
     const copyBtn = await screen.findByTestId('share-btn');
     expect(copyBtn).toBeInTheDocument();
     userEvent.click(copyBtn);
-    // const copied = screen.getByText('Link copied!');
-    // expect(copied).toBeInTheDocument();
   });
 });
 
@@ -118,7 +116,7 @@ describe('Testa o componente RecipeInProgress com drinks se', () => {
     expect(favBtn).toHaveAttribute('src', 'whiteHeartIcon.svg');
   });
 
-  it('o botão fica abilitado somente quando todos os checkbox forem clicados', async () => {
+  it('é possível copiar o link da receita', async () => {
     const { history } = renderWithRouter(
       <App />,
     );
@@ -131,7 +129,5 @@ describe('Testa o componente RecipeInProgress com drinks se', () => {
     const copyBtn = await screen.findByTestId('share-btn');
     expect(copyBtn).toBeInTheDocument();
     userEvent.click(copyBtn);
-    // const copied = screen.getByText('Link copied!');
-    // expect(copied).toBeInTheDocument();
   });
 });

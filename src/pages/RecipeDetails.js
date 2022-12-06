@@ -1,11 +1,10 @@
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import Slider from '../components/Slider';
 import { fetchDrinksById, drinksAPI } from '../services/drinksAPI';
 import { fetchFoodById, foodsAPI } from '../services/foodsAPI';
 import '../styles/RecipeDetails.css';
 import shareIcon from '../images/shareIcon.svg';
-import RecipesAppContext from '../context/RecipesAppContext';
 
 function RecipeDetails({ type, match, history }) {
   const { id } = match.params;
@@ -15,7 +14,6 @@ function RecipeDetails({ type, match, history }) {
   const [ingredients, setIngredients] = useState([]);
   const [measure, setMeasure] = useState([]);
   const [copied, setCopied] = useState(false);
-  const { setInProgress } = useContext(RecipesAppContext);
 
   useEffect(() => {
     const test = async () => {
@@ -32,6 +30,7 @@ function RecipeDetails({ type, match, history }) {
         setvideo(a);
       }
     };
+    console.log(recipes);
     test();
   }, [id]);
 
@@ -56,7 +55,7 @@ function RecipeDetails({ type, match, history }) {
   const cat = type === 'meals' ? recipe.strCategory : recipe.strAlcoholic;
 
   const startRecipeClick = () => {
-    setInProgress(recipe);
+    // console.log(history.location);
     history.push(`${history.location.pathname}/in-progress`);
   };
 

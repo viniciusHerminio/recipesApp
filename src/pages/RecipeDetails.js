@@ -7,8 +7,9 @@ import { fetchFoodById, foodsAPI } from '../services/foodsAPI';
 import { getFavs, saveFav } from '../services/localStorage';
 import '../styles/RecipeDetails.css';
 import shareIcon from '../images/shareIcon.svg';
-import RecipesAppContext from '../context/RecipesAppContext';
+// import RecipesAppContext from '../context/RecipesAppContext';
 import whiteHeartIcon from '../images/whiteHeartIcon.svg';
+import blackHeartIcon from '../images/blackHeartIcon.svg';
 
 function RecipeDetails({ type, match, history }) {
   const { id } = match.params;
@@ -18,6 +19,8 @@ function RecipeDetails({ type, match, history }) {
   const [ingredients, setIngredients] = useState([]);
   const [measure, setMeasure] = useState([]);
   const [copied, setCopied] = useState(false);
+  const [favorited, setFavorited] = useState(false);
+  // const { setInProgress } = useContext(RecipesAppContext);
 
   useEffect(() => {
     const test = async () => {
@@ -36,6 +39,13 @@ function RecipeDetails({ type, match, history }) {
     };
     console.log(recipes);
     test();
+    if (getFavs('favoriteRecipes')) {
+      const favorites = JSON.parse(getFavs('favoriteRecipes'));
+      const isFovorite = favorites.some((item) => item.id === id);
+      if (isFovorite) {
+        setFavorited(true);
+      }
+    }
   }, [id]);
 
   useEffect(() => {
@@ -82,14 +92,21 @@ function RecipeDetails({ type, match, history }) {
       favorite.alcoholicOrNot = recipe.strAlcoholic;
       favorite.nationality = '';
     }
-    if (getFavs('favoriteRecipes')) {
-      const favs = JSON.parse(getFavs('favoriteRecipes'));
-      favs.push(favorite);
-      saveFav(JSON.stringify(favs));
+    if (!favorited) {
+      if (getFavs('favoriteRecipes')) {
+        const favs = JSON.parse(getFavs('favoriteRecipes'));
+        favs.push(favorite);
+        saveFav(JSON.stringify(favs));
+      } else {
+        const favs = [favorite];
+        saveFav(JSON.stringify(favs));
+      }
     } else {
-      const favs = [favorite];
-      saveFav(JSON.stringify(favs));
+      const favs = JSON.parse(getFavs('favoriteRecipes'));
+      const newFavs = favs.filter((item) => item.id !== id);
+      saveFav(JSON.stringify(newFavs));
     }
+    setFavorited(!favorited);
   };
 
   return (
@@ -128,10 +145,13 @@ function RecipeDetails({ type, match, history }) {
           <button
             className="share-btn"
             type="button"
-            data-testid="favorite-btn"
             onClick={ favoriteClick }
           >
-            <img src={ whiteHeartIcon } alt="Favorite Icon" />
+            <img
+              data-testid="favorite-btn"
+              src={ favorited ? blackHeartIcon : whiteHeartIcon }
+              alt="Favorite Icon"
+            />
           </button>
         </div>
         <ul>

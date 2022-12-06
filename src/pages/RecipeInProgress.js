@@ -71,7 +71,8 @@ function RecipeInProgress({ type }) {
     const nationality = type === 'meals' ? thisRecipe.strArea : '';
     const local = JSON.parse(localStorage.getItem('doneRecipes'));
     const findId = type === 'meals' ? 'idMeal' : 'idDrink';
-    const tags = type === 'meals' ? thisRecipe.strTags.split(',') : [];
+    const tags = type !== 'meals' || thisRecipe.strTags === null ? []
+      : thisRecipe.strTags.split(',');
     const date = new Date();
     const obj = {
       id: thisRecipe[findId],

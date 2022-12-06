@@ -14,7 +14,6 @@ function CheckBox({
 }) {
   const [itsChecked, setItsChecked] = useState(false);
   const { setDisabled } = useContext(RecipesAppContext);
-  // const [line, setLine ] = useState(false);
 
   const handleFinishBtn = () => {
     if (allIngs
@@ -41,31 +40,32 @@ function CheckBox({
   }, [ingredientsProgress]);
 
   return (
-    <li>
-      <label
-        data-testid={ `${index}-ingredient-step` }
-        htmlFor={ ing }
-        className={ itsChecked ? 'itsChecked' : '' }
-      >
-        <input
-          type="checkbox"
-          id={ ing }
-          onChange={ handleCheck }
-          checked={ itsChecked }
-        />
-        <span>
-          { ing }
-          {' '}
-          { measure }
-        </span>
-      </label>
-    </li>
+    ing === '' ? <h2> Loading... </h2> : (
+      <li>
+        <label
+          data-testid={ `${index}-ingredient-step` }
+          htmlFor={ ing }
+          className={ itsChecked ? 'itsChecked' : '' }
+        >
+          <input
+            type="checkbox"
+            id={ ing }
+            onChange={ handleCheck }
+            checked={ itsChecked }
+          />
+          <span>
+            { ing }
+            {' '}
+            { measure }
+          </span>
+        </label>
+      </li>)
   );
 }
 
 CheckBox.defaultProps = {
   measure: '',
-  ing: 'Loading...',
+  ing: '',
 };
 
 CheckBox.propTypes = {

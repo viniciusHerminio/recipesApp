@@ -38,9 +38,8 @@ function RecipeDetails({ type, match, history }) {
       }
     };
     test();
-    if (localStorage.getItem('favoriteRecipes')) {
-      const favorites = JSON.parse(localStorage.getItem('favoriteRecipes'));
-      // console.log(favorites);
+    if (getFavs('favoriteRecipes')) {
+      const favorites = JSON.parse(getFavs('favoriteRecipes'));
       const isFovorite = favorites.some((item) => item.id === id);
       if (isFovorite) {
         setFavorited(true);
@@ -92,13 +91,19 @@ function RecipeDetails({ type, match, history }) {
       favorite.alcoholicOrNot = recipe.strAlcoholic;
       favorite.nationality = '';
     }
-    if (getFavs('favoriteRecipes')) {
-      const favs = JSON.parse(getFavs('favoriteRecipes'));
-      favs.push(favorite);
-      saveFav(JSON.stringify(favs));
+    if (!favorited) {
+      if (getFavs('favoriteRecipes')) {
+        const favs = JSON.parse(getFavs('favoriteRecipes'));
+        favs.push(favorite);
+        saveFav(JSON.stringify(favs));
+      } else {
+        const favs = [favorite];
+        saveFav(JSON.stringify(favs));
+      }
     } else {
-      const favs = [favorite];
-      saveFav(JSON.stringify(favs));
+      const favs = JSON.parse(getFavs('favoriteRecipes'));
+      const newFavs = favs.filter((item) => item.id !== id);
+      saveFav(JSON.stringify(newFavs));
     }
     setFavorited(!favorited);
   };

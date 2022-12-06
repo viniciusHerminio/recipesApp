@@ -1,10 +1,14 @@
 import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
+import copy from 'clipboard-copy';
 import Slider from '../components/Slider';
 import { fetchDrinksById, drinksAPI } from '../services/drinksAPI';
 import { fetchFoodById, foodsAPI } from '../services/foodsAPI';
+import { getFavs, saveFav } from '../services/localStorage';
 import '../styles/RecipeDetails.css';
 import shareIcon from '../images/shareIcon.svg';
+import RecipesAppContext from '../context/RecipesAppContext';
+import whiteHeartIcon from '../images/whiteHeartIcon.svg';
 
 function RecipeDetails({ type, match, history }) {
   const { id } = match.params;
@@ -64,6 +68,30 @@ function RecipeDetails({ type, match, history }) {
     setCopied(true);
   };
 
+  const favoriteClick = () => {
+    const favorite = {
+      id,
+      type: type.substring(0, type.length - 1),
+      nationality: recipe.strArea,
+      category: recipe.strCategory,
+      name: title,
+      image: thumb,
+      alcoholicOrNot: '',
+    };
+    if (type === 'drinks') {
+      favorite.alcoholicOrNot = recipe.strAlcoholic;
+      favorite.nationality = '';
+    }
+    if (getFavs('favoriteRecipes')) {
+      const favs = JSON.parse(getFavs('favoriteRecipes'));
+      favs.push(favorite);
+      saveFav(JSON.stringify(favs));
+    } else {
+      const favs = [favorite];
+      saveFav(JSON.stringify(favs));
+    }
+  };
+
   return (
     <main className="recipe">
       <section className="recipe-item">
@@ -97,8 +125,13 @@ function RecipeDetails({ type, match, history }) {
             />
           </button>
           { copied && <span>Link copied!</span> }
-          <button className="share-btn" type="button" data-testid="favorite-btn">
-            Favoritar
+          <button
+            className="share-btn"
+            type="button"
+            data-testid="favorite-btn"
+            onClick={ favoriteClick }
+          >
+            <img src={ whiteHeartIcon } alt="Favorite Icon" />
           </button>
         </div>
         <ul>

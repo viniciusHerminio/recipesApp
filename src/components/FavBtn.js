@@ -14,10 +14,8 @@ function FavBtn({ thisRecipe, type, title, thumb }) {
     if (JSON.parse(localStorage.getItem('favoriteRecipes'))) {
       const r = JSON.parse(localStorage.getItem('favoriteRecipes'));
       const b = r.some((item) => item.id === id);
-      // console.log(b);
       if (b) {
         const w = (r.filter((a) => a.id !== id));
-        // console.log(w);
         localStorage.setItem('favoriteRecipes', JSON.stringify(w));
         setItsFav(false);
       } else {

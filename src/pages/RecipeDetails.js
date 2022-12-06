@@ -7,7 +7,6 @@ import { fetchFoodById, foodsAPI } from '../services/foodsAPI';
 import { getFavs, saveFav } from '../services/localStorage';
 import '../styles/RecipeDetails.css';
 import shareIcon from '../images/shareIcon.svg';
-import RecipesAppContext from '../context/RecipesAppContext';
 import whiteHeartIcon from '../images/whiteHeartIcon.svg';
 
 function RecipeDetails({ type, match, history }) {

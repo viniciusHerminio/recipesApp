@@ -4,10 +4,9 @@ import copy from 'clipboard-copy';
 import Slider from '../components/Slider';
 import { fetchDrinksById, drinksAPI } from '../services/drinksAPI';
 import { fetchFoodById, foodsAPI } from '../services/foodsAPI';
-import { getFavs, saveFav } from '../services/localStorage';
+import { getFavs, saveFav, getInProgress } from '../services/localStorage';
 import '../styles/RecipeDetails.css';
 import shareIcon from '../images/shareIcon.svg';
-// import RecipesAppContext from '../context/RecipesAppContext';
 import whiteHeartIcon from '../images/whiteHeartIcon.svg';
 import blackHeartIcon from '../images/blackHeartIcon.svg';
 
@@ -20,7 +19,7 @@ function RecipeDetails({ type, match, history }) {
   const [measure, setMeasure] = useState([]);
   const [copied, setCopied] = useState(false);
   const [favorited, setFavorited] = useState(false);
-  // const { setInProgress } = useContext(RecipesAppContext);
+  const [statusProgress, setStatusProgress] = useState('Start');
 
   useEffect(() => {
     const test = async () => {
@@ -39,11 +38,20 @@ function RecipeDetails({ type, match, history }) {
     };
     console.log(recipes);
     test();
-    if (getFavs('favoriteRecipes')) {
-      const favorites = JSON.parse(getFavs('favoriteRecipes'));
+    if (getFavs()) {
+      const favorites = JSON.parse(getFavs());
       const isFovorite = favorites.some((item) => item.id === id);
       if (isFovorite) {
         setFavorited(true);
+      }
+    }
+    if (getInProgress()) {
+      const recipesInProgress = JSON.parse(getInProgress());
+      const recipeKeys = Object.keys(JSON.parse(getInProgress()));
+      const inProgressRecipesKeys = Object.keys(recipesInProgress[recipeKeys[0]]);
+      console.log(inProgressRecipesKeys);
+      if (inProgressRecipesKeys.includes(id)) {
+        setStatusProgress('Continue');
       }
     }
   }, [id]);
@@ -69,7 +77,6 @@ function RecipeDetails({ type, match, history }) {
   const cat = type === 'meals' ? recipe.strCategory : recipe.strAlcoholic;
 
   const startRecipeClick = () => {
-    // console.log(history.location);
     history.push(`${history.location.pathname}/in-progress`);
   };
 
@@ -93,8 +100,8 @@ function RecipeDetails({ type, match, history }) {
       favorite.nationality = '';
     }
     if (!favorited) {
-      if (getFavs('favoriteRecipes')) {
-        const favs = JSON.parse(getFavs('favoriteRecipes'));
+      if (getFavs()) {
+        const favs = JSON.parse(getFavs());
         favs.push(favorite);
         saveFav(JSON.stringify(favs));
       } else {
@@ -102,7 +109,7 @@ function RecipeDetails({ type, match, history }) {
         saveFav(JSON.stringify(favs));
       }
     } else {
-      const favs = JSON.parse(getFavs('favoriteRecipes'));
+      const favs = JSON.parse(getFavs());
       const newFavs = favs.filter((item) => item.id !== id);
       saveFav(JSON.stringify(newFavs));
     }
@@ -207,7 +214,7 @@ function RecipeDetails({ type, match, history }) {
           type="button"
           onClick={ startRecipeClick }
         >
-          Start Recipe
+          {`${statusProgress} Recipe`}
         </button>
         {/* <Footer /> */}
       </footer>

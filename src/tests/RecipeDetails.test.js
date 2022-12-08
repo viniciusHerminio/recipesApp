@@ -5,7 +5,6 @@ import App from '../App';
 import renderWithRouter from './helpers/renderWithRouter';
 import meals from './mocks/meals';
 import drinks from './mocks/drinks';
-import 'jest-localstorage-mock';
 
 const timbitsPath = '/meals/52929';
 // const sushiPath = '/meals/53065';

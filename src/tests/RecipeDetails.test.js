@@ -7,7 +7,6 @@ import meals from './mocks/meals';
 import drinks from './mocks/drinks';
 
 const timbitsPath = '/meals/52929';
-// const sushiPath = '/meals/53065';
 const atntPath = '/drinks/13938';
 const blackHeartSrc = 'blackHeartIcon.svg';
 const startBtnId = 'start-recipe-btn';

@@ -5,12 +5,13 @@ import App from '../App';
 import renderWithRouter from './helpers/renderWithRouter';
 import meals from './mocks/meals';
 import drinks from './mocks/drinks';
-import mealsCategories from './mocks/mealsCategories';
-import drinksCategories from './mocks/drinksCategories';
+import 'jest-localstorage-mock';
 
 const timbitsPath = '/meals/52929';
 // const sushiPath = '/meals/53065';
 const atntPath = '/drinks/13938';
+const blackHeartSrc = 'blackHeartIcon.svg';
+const startBtnId = 'start-recipe-btn';
 
 const favorites = [{
   id: '52929',
@@ -18,18 +19,31 @@ const favorites = [{
   alcoholicOrNot: '',
 }];
 
+const atntfav = [{
+  alcoholicOrNot: 'Alcoholic',
+  category: 'Ordinary Drink',
+  id: '13938',
+  nationality: '',
+  type: 'drink',
+}];
+
+const inProgressRecipes = [{
+  drinks: {
+    178319: [],
+  },
+}];
+
 jest
   .fn()
   .mockReturnValue(meals)
-  .mockReturnValueOnce(drinks)
-  .mockReturnValueOnce(mealsCategories)
-  .mockReturnValueOnce(drinksCategories);
+  .mockReturnValueOnce(drinks);
 
 afterEach(() => {
   jest.clearAllMocks();
 });
 
 const recipePhotoId = 'recipe-photo';
+const favoriteId = 'favorite-btn';
 
 describe('Testando os elementos do componente RecipeDetails', () => {
   it('Testa a requisição de meals:id', async () => {
@@ -38,7 +52,7 @@ describe('Testando os elementos do componente RecipeDetails', () => {
       history.push(timbitsPath);
     });
     expect(screen.getByTestId('video')).toBeInTheDocument();
-    expect(screen.getByTestId('start-recipe-btn')).toBeInTheDocument();
+    expect(screen.getByTestId(startBtnId)).toBeInTheDocument();
 
     await waitFor(() => {
       expect(screen.getByTestId(recipePhotoId)).toHaveAttribute('src', 'https://www.themealdb.com/images/media/meals/txsupu1511815755.jpg');
@@ -81,25 +95,6 @@ describe('Testando os elementos do componente RecipeDetails', () => {
   });
 });
 
-// const localStorageMock = (function () {
-//   let store = {};
-
-//   return {
-//     getItem(key) {
-//       return store[key] || null;
-//     },
-//     setItem(key, value) {
-//       store[key] = value.toString();
-//     },
-//     removeItem(key) {
-//       delete store[key];
-//     },
-//     clear() {
-//       store = {};
-//     },
-//   };
-// }());
-
 describe('Testanto features do componente', () => {
   beforeEach(() => {
     Object.defineProperty(window, 'localStorage', {
@@ -109,9 +104,6 @@ describe('Testanto features do componente', () => {
       },
       writable: true,
     });
-    // Object.defineProperty(window, 'localStorage', {
-    //   value: localStorageMock,
-    // });
   });
 
   it('Testando botão Start Recipe', async () => {
@@ -119,7 +111,7 @@ describe('Testanto features do componente', () => {
     act(() => {
       history.push(timbitsPath);
     });
-    userEvent.click(screen.getByTestId('start-recipe-btn'));
+    userEvent.click(screen.getByTestId(startBtnId));
 
     await waitFor(() => {
       expect(history.location.pathname).toBe(`${timbitsPath}/in-progress`);
@@ -146,12 +138,11 @@ describe('Testanto features do componente', () => {
     act(() => {
       history.push(timbitsPath);
     });
-    const favoriteId = 'favorite-btn';
     expect(screen.getByTestId(favoriteId)).toHaveAttribute('src', 'whiteHeartIcon.svg');
     userEvent.click(screen.getByTestId(favoriteId));
 
     await waitFor(() => {
-      expect(screen.getByTestId(favoriteId)).toHaveAttribute('src', 'blackHeartIcon.svg');
+      expect(screen.getByTestId(favoriteId)).toHaveAttribute('src', blackHeartSrc);
       expect(window.localStorage.getItem).toHaveBeenCalled();
       expect(window.localStorage.setItem).toHaveBeenCalledTimes(1);
       expect(window.localStorage.setItem).toHaveBeenCalledWith(
@@ -164,21 +155,86 @@ describe('Testanto features do componente', () => {
       history.push(timbitsPath);
     });
     await waitFor(() => {
-      expect(screen.getByTestId(favoriteId)).toHaveAttribute('src', 'blackHeartIcon.svg');
+      expect(screen.getByTestId(favoriteId)).toHaveAttribute('src', blackHeartSrc);
       expect(window.localStorage.getItem).toHaveBeenCalled();
     });
+  });
+});
 
+describe('Testando botão de favoritar', () => {
+  // beforeEach(() => {
+  //   Object.defineProperty(window, 'localStorage', {
+  //     value: {
+  //       getItem: jest.fn(() => JSON.stringify(favorites)),
+  //       setItem: jest.fn(() => null),
+  //     },
+  //     writable: true,
+  //   });
+  // });
+
+  it('Testando drink favorito', async () => {
+    Object.defineProperty(window, 'localStorage', {
+      value: {
+        getItem: jest.fn(() => JSON.stringify(atntfav)),
+        setItem: jest.fn(() => null),
+      },
+      writable: true,
+    });
+    const { history } = renderWithRouter(<App />);
     act(() => {
       history.push(atntPath);
     });
+
+    userEvent.click(screen.getByTestId(favoriteId));
+
+    act(() => {
+      history.push(timbitsPath);
+    });
+
+    userEvent.click(screen.getByTestId(favoriteId));
+  });
+
+  it('Testando desfavoritar', async () => {
+    Object.defineProperty(window, 'localStorage', {
+      value: {
+        getItem: jest.fn(() => JSON.stringify(favorites)),
+        setItem: jest.fn(() => null),
+      },
+      writable: true,
+    });
+    const { history } = renderWithRouter(<App />);
+    act(() => {
+      history.push(timbitsPath);
+    });
+
     userEvent.click(screen.getByTestId(favoriteId));
 
     await waitFor(() => {
+      expect(screen.getByTestId(favoriteId)).not.toHaveAttribute('src', blackHeartSrc);
       expect(window.localStorage.getItem).toHaveBeenCalled();
-      expect(window.localStorage.setItem).toHaveBeenCalledWith(
-        'favoriteRecipes',
-        JSON.stringify(favorites),
-      );
+    });
+  });
+});
+
+describe('Testando botão de continue', () => {
+  beforeEach(() => {
+    Object.defineProperty(window, 'localStorage', {
+      value: {
+        getItem: jest.fn(() => JSON.stringify(inProgressRecipes)),
+        setItem: jest.fn(() => null),
+      },
+      writable: true,
+    });
+  });
+
+  it('Testando progresso', async () => {
+    const { history } = renderWithRouter(<App />);
+    act(() => {
+      history.push(atntPath);
+    });
+
+    await waitFor(() => {
+      expect(screen.getByTestId(startBtnId)).toHaveTextContent('Continue Recipe');
     });
   });
 });

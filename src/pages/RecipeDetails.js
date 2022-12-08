@@ -36,7 +36,6 @@ function RecipeDetails({ type, match, history }) {
         setvideo(a);
       }
     };
-    console.log(recipes);
     test();
     if (getFavs()) {
       const favorites = JSON.parse(getFavs());
@@ -57,15 +56,12 @@ function RecipeDetails({ type, match, history }) {
   }, [id]);
 
   useEffect(() => {
-    const arrIng = [];
-    const arrMeasure = [];
-    const fifth = 15;
+    const arrIng = []; const arrMeasure = []; const fifth = 15;
     const getIngredients = async () => {
       for (let i = 1; i <= fifth; i += 1) {
         arrIng.push(recipe[`strIngredient${i}`]);
         arrMeasure.push(recipe[`strMeasure${i}`]);
       }
-      console.log(arrIng);
       setIngredients(arrIng);
       setMeasure(arrMeasure);
     };
@@ -132,9 +128,7 @@ function RecipeDetails({ type, match, history }) {
         <p
           data-testid="recipe-category"
         >
-          Category:
-          {' '}
-          { cat }
+          {`Category: ${cat}`}
         </p>
         <div>
           <button
@@ -170,9 +164,7 @@ function RecipeDetails({ type, match, history }) {
                   key={ `${index}-ingredient-name-and-measure` }
                   data-testid={ `${index}-ingredient-name-and-measure` }
                 >
-                  { ing }
-                  {' '}
-                  { measure[index] }
+                  { `${ing} ${measure[index]}` }
                 </li>) : null;
             }
             return ing !== null ? (
@@ -180,9 +172,7 @@ function RecipeDetails({ type, match, history }) {
                 key={ `${index}-ingredient-name-and-measure` }
                 data-testid={ `${index}-ingredient-name-and-measure` }
               >
-                { ing }
-                {' '}
-                { measure[index] }
+                { `${ing} ${measure[index]}` }
               </li>) : null;
           })}
         </ul>
@@ -216,7 +206,6 @@ function RecipeDetails({ type, match, history }) {
         >
           {`${statusProgress} Recipe`}
         </button>
-        {/* <Footer /> */}
       </footer>
     </main>
   );

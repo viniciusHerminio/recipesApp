@@ -52,6 +52,7 @@ function CheckBox({
             id={ ing }
             onChange={ handleCheck }
             checked={ itsChecked }
+            data-testid={ ing }
           />
           <span>
             { ing }

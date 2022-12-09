@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
@@ -10,9 +10,15 @@ import blackHeartIcon from '../images/blackHeartIcon.svg';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 export default function FavoriteRecipes() {
-  const favoriteRecipes = JSON.parse(localStorage.getItem('favoriteRecipes'));
+  const favoriteRecipe = () => JSON.parse(localStorage.getItem('favoriteRecipes'));
   const [copied, setCopied] = useState(false);
+  const [favorite, setFavorite] = useState(false);
   const history = useHistory();
+  const favoriteRecipes = favoriteRecipe();
+
+  useEffect(() => {
+    favoriteRecipe();
+  }, [favorite]);
 
   const copyLink = (type, id) => {
     const time = 3000;
@@ -24,7 +30,16 @@ export default function FavoriteRecipes() {
   };
 
   const redirectPage = (type, id) => {
+    console.log(type);
+    console.log(id);
     history.push(`/${type}s/${id}`);
+  };
+
+  const disfavor = (id) => {
+    const recipe = JSON.parse(localStorage.getItem('favoriteRecipes'));
+    const recipeDisfavor = recipe.filter((rec) => rec.id !== id);
+    localStorage.setItem('favoriteRecipes', JSON.stringify(recipeDisfavor));
+    setFavorite(!favorite);
   };
 
   return (
@@ -63,6 +78,9 @@ export default function FavoriteRecipes() {
                 <button
                   type="button"
                   onClick={ () => redirectPage(type, id) }
+                  name="drink"
+                  data-testid="button-drink"
+                  className="w-75"
                 >
                   <img
                     src={ image }
@@ -75,6 +93,7 @@ export default function FavoriteRecipes() {
                   <button
                     type="button"
                     onClick={ () => redirectPage(type, id) }
+                    data-testid="button-name-drink"
 
                   >
                     <h3
@@ -106,6 +125,7 @@ export default function FavoriteRecipes() {
                   </button>
                   <button
                     type="button"
+                    onClick={ () => disfavor(id) }
                   >
                     <img
                       src={ blackHeartIcon }
@@ -121,8 +141,10 @@ export default function FavoriteRecipes() {
           return (
             <div key={ id } className="d-flex align-items-center mt-4">
               <button
-                type="button"
                 onClick={ () => redirectPage(type, id) }
+                type="button"
+                data-testid="button-food"
+                className="w-75"
               >
                 <img
                   src={ image }
@@ -133,8 +155,9 @@ export default function FavoriteRecipes() {
               </button>
               <div className="ms-3">
                 <button
-                  type="button"
                   onClick={ () => redirectPage(type, id) }
+                  type="button"
+                  data-testid="button-name-food"
                 >
                   <h3
                     data-testid={ `${index}-horizontal-name` }
@@ -162,6 +185,7 @@ export default function FavoriteRecipes() {
                 </button>
                 <button
                   type="button"
+                  onClick={ () => disfavor(id) }
                 >
                   <img
                     src={ blackHeartIcon }

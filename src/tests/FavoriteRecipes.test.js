@@ -1,5 +1,5 @@
 import React from 'react';
-import { fireEvent, screen, waitFor } from '@testing-library/react';
+import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import App from '../App';
 import renderWithRouter from './helpers/renderWithRouter';
@@ -55,7 +55,7 @@ describe('testes da página de favoritos', () => {
     const favorite = screen.getByText('Favorites');
     expect(favorite).toBeInTheDocument();
     expect(image).toBeInTheDocument();
-    fireEvent.click(image);
+    userEvent.click(image);
     await waitFor(() => expect(history.location.pathname).toBe('/meals/52977'));
   });
   test('testa se ao clicar no nome da comida a página é redirecionada', async () => {
@@ -73,7 +73,7 @@ describe('testes da página de favoritos', () => {
     const favorite = screen.getByText('Favorites');
     expect(favorite).toBeInTheDocument();
     expect(image).toBeInTheDocument();
-    fireEvent.click(image);
+    userEvent.click(image);
     await waitFor(() => expect(history.location.pathname).toBe('/meals/52977'));
   });
   test('testa se ao clicar na imagem do drink a página é redirecionada', async () => {
@@ -91,7 +91,7 @@ describe('testes da página de favoritos', () => {
     const favorite = screen.getByText('Favorites');
     expect(favorite).toBeInTheDocument();
     expect(image).toBeInTheDocument();
-    fireEvent.click(image);
+    userEvent.click(image);
     await waitFor(() => expect(history.location.pathname).toBe('/drinks/15997'));
   });
   test('testa se ao clicar na imagem do drink a página é redirecionada', async () => {
@@ -109,7 +109,104 @@ describe('testes da página de favoritos', () => {
     const favorite = screen.getByText('Favorites');
     expect(favorite).toBeInTheDocument();
     expect(image).toBeInTheDocument();
-    fireEvent.click(image);
+    userEvent.click(image);
     await waitFor(() => expect(history.location.pathname).toBe('/drinks/15997'));
+  });
+  test('testa se ao clicar no filtro de drink só aparecerão drinks na página', async () => {
+    const object = [{ id: '52977', type: 'meal', nationality: 'Turkish', category: 'Side', name: 'Corba', image: 'https://www.themealdb.com/images/media/meals/58oia61564916529.jpg', alcoholicOrNot: '' }, { id: '15997', type: 'drink', nationality: '', category: 'Ordinary Drink', name: 'GG', image: 'https://www.thecocktaildb.com/images/media/drink/vyxwut1468875960.jpg', alcoholicOrNot: 'Optional alcohol' }];
+    localStorage.setItem('favoriteRecipes', JSON.stringify(object));
+    const { history } = renderWithRouter(<App />);
+    const inputEmail = screen.getByTestId(emailInput);
+    const inputPassword = screen.getByTestId(passwordInput);
+    const button = screen.getByRole('button', { name: 'Enter' });
+    userEvent.type(inputEmail, emailLiteral);
+    userEvent.type(inputPassword, '1234567');
+    userEvent.click(button);
+    history.push(favoriteRecipes);
+    const btnFilterDrink = await screen.findByTestId('filter-by-drink-btn');
+    const recipeFood = await screen.findByTestId('button-food');
+    userEvent.click(btnFilterDrink);
+    expect(recipeFood).not.toBeInTheDocument();
+  });
+  test('testa se ao clicar no filtro de meal só aparecerão meals na página', async () => {
+    const object = [{ id: '52977', type: 'meal', nationality: 'Turkish', category: 'Side', name: 'Corba', image: 'https://www.themealdb.com/images/media/meals/58oia61564916529.jpg', alcoholicOrNot: '' }, { id: '15997', type: 'drink', nationality: '', category: 'Ordinary Drink', name: 'GG', image: 'https://www.thecocktaildb.com/images/media/drink/vyxwut1468875960.jpg', alcoholicOrNot: 'Optional alcohol' }];
+    localStorage.setItem('favoriteRecipes', JSON.stringify(object));
+    const { history } = renderWithRouter(<App />);
+    const inputEmail = screen.getByTestId(emailInput);
+    const inputPassword = screen.getByTestId(passwordInput);
+    const button = screen.getByRole('button', { name: 'Enter' });
+    userEvent.type(inputEmail, emailLiteral);
+    userEvent.type(inputPassword, '1234567');
+    userEvent.click(button);
+    history.push(favoriteRecipes);
+    const btnFilterMeal = await screen.findByTestId('filter-by-meal-btn');
+    const recipeDrink = await screen.findByTestId('button-drink');
+    userEvent.click(btnFilterMeal);
+    expect(recipeDrink).not.toBeInTheDocument();
+  });
+  test('testa se ao clicar no filtro Alltodas receitas aparecerão na página', async () => {
+    const object = [{ id: '52977', type: 'meal', nationality: 'Turkish', category: 'Side', name: 'Corba', image: 'https://www.themealdb.com/images/media/meals/58oia61564916529.jpg', alcoholicOrNot: '' }, { id: '15997', type: 'drink', nationality: '', category: 'Ordinary Drink', name: 'GG', image: 'https://www.thecocktaildb.com/images/media/drink/vyxwut1468875960.jpg', alcoholicOrNot: 'Optional alcohol' }];
+    localStorage.setItem('favoriteRecipes', JSON.stringify(object));
+    const { history } = renderWithRouter(<App />);
+    const inputEmail = screen.getByTestId(emailInput);
+    const inputPassword = screen.getByTestId(passwordInput);
+    const button = screen.getByRole('button', { name: 'Enter' });
+    userEvent.type(inputEmail, emailLiteral);
+    userEvent.type(inputPassword, '1234567');
+    userEvent.click(button);
+    history.push(favoriteRecipes);
+    const btnFilterAll = await screen.findByTestId('filter-by-all-btn');
+    const recipeDrink = await screen.findByTestId('button-drink');
+    const recipeFood = await screen.findByTestId('button-food');
+    userEvent.click(btnFilterAll);
+    expect(recipeDrink).toBeInTheDocument();
+    expect(recipeFood).toBeInTheDocument();
+  });
+  test('testa se ao clicar no botão de desfavoritar a comida, a receita desaparece da tela', async () => {
+    const object = [{ id: '52977', type: 'meal', nationality: 'Turkish', category: 'Side', name: 'Corba', image: 'https://www.themealdb.com/images/media/meals/58oia61564916529.jpg', alcoholicOrNot: '' }, { id: '15997', type: 'drink', nationality: '', category: 'Ordinary Drink', name: 'GG', image: 'https://www.thecocktaildb.com/images/media/drink/vyxwut1468875960.jpg', alcoholicOrNot: 'Optional alcohol' }];
+    localStorage.setItem('favoriteRecipes', JSON.stringify(object));
+    const { history } = renderWithRouter(<App />);
+    const inputEmail = screen.getByTestId(emailInput);
+    const inputPassword = screen.getByTestId(passwordInput);
+    const button = screen.getByRole('button', { name: 'Enter' });
+    userEvent.type(inputEmail, emailLiteral);
+    userEvent.type(inputPassword, '1234567');
+    userEvent.click(button);
+    history.push(favoriteRecipes);
+    const recipeFood = await screen.findByTestId('button-food');
+    const btnDisfavor = screen.getAllByAltText('black heart icon');
+    userEvent.click(btnDisfavor[0]);
+    expect(recipeFood).not.toBeInTheDocument();
+  });
+  test('testa se ao clicar no botão de desfavoritar a bebida, a receita desaparece da tela', async () => {
+    const object = [{ id: '52977', type: 'meal', nationality: 'Turkish', category: 'Side', name: 'Corba', image: 'https://www.themealdb.com/images/media/meals/58oia61564916529.jpg', alcoholicOrNot: '' }, { id: '15997', type: 'drink', nationality: '', category: 'Ordinary Drink', name: 'GG', image: 'https://www.thecocktaildb.com/images/media/drink/vyxwut1468875960.jpg', alcoholicOrNot: 'Optional alcohol' }];
+    localStorage.setItem('favoriteRecipes', JSON.stringify(object));
+    const { history } = renderWithRouter(<App />);
+    const inputEmail = screen.getByTestId(emailInput);
+    const inputPassword = screen.getByTestId(passwordInput);
+    const button = screen.getByRole('button', { name: 'Enter' });
+    userEvent.type(inputEmail, emailLiteral);
+    userEvent.type(inputPassword, '1234567');
+    userEvent.click(button);
+    history.push(favoriteRecipes);
+    const recipeDrink = await screen.findByTestId('button-drink');
+    const btnDisfavor = screen.getAllByAltText('black heart icon');
+    userEvent.click(btnDisfavor[1]);
+    expect(recipeDrink).not.toBeInTheDocument();
+  });
+  test('testa se ao clicar no botão de copiar a receita, a receita é copiada para o clipboard', async () => {
+    const object = [{ id: '52977', type: 'meal', nationality: 'Turkish', category: 'Side', name: 'Corba', image: 'https://www.themealdb.com/images/media/meals/58oia61564916529.jpg', alcoholicOrNot: '' }, { id: '15997', type: 'drink', nationality: '', category: 'Ordinary Drink', name: 'GG', image: 'https://www.thecocktaildb.com/images/media/drink/vyxwut1468875960.jpg', alcoholicOrNot: 'Optional alcohol' }];
+    localStorage.setItem('favoriteRecipes', JSON.stringify(object));
+    const { history } = renderWithRouter(<App />);
+    const inputEmail = screen.getByTestId(emailInput);
+    const inputPassword = screen.getByTestId(passwordInput);
+    const button = screen.getByRole('button', { name: 'Enter' });
+    userEvent.type(inputEmail, emailLiteral);
+    userEvent.type(inputPassword, '1234567');
+    userEvent.click(button);
+    history.push(favoriteRecipes);
+    const btnShare = await screen.findByTestId('1-horizontal-share-btn');
+    userEvent.click(btnShare);
+    expect(navigator.clipboard.writeText).toBeCalledTimes(1);
   });
 });

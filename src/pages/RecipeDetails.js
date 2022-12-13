@@ -1,14 +1,14 @@
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import copy from 'clipboard-copy';
 import Slider from '../components/Slider';
 import { fetchDrinksById, drinksAPI } from '../services/drinksAPI';
 import { fetchFoodById, foodsAPI } from '../services/foodsAPI';
-import { getFavs, saveFav } from '../services/localStorage';
+import { getFavs, saveFav, getInProgress } from '../services/localStorage';
 import '../styles/RecipeDetails.css';
 import shareIcon from '../images/shareIcon.svg';
-import RecipesAppContext from '../context/RecipesAppContext';
 import whiteHeartIcon from '../images/whiteHeartIcon.svg';
+import blackHeartIcon from '../images/blackHeartIcon.svg';
 
 function RecipeDetails({ type, match, history }) {
   const { id } = match.params;
@@ -18,7 +18,8 @@ function RecipeDetails({ type, match, history }) {
   const [ingredients, setIngredients] = useState([]);
   const [measure, setMeasure] = useState([]);
   const [copied, setCopied] = useState(false);
-  const { setInProgress } = useContext(RecipesAppContext);
+  const [favorited, setFavorited] = useState(false);
+  const [statusProgress, setStatusProgress] = useState('Start');
 
   useEffect(() => {
     const test = async () => {
@@ -36,18 +37,31 @@ function RecipeDetails({ type, match, history }) {
       }
     };
     test();
+    if (getFavs()) {
+      const favorites = JSON.parse(getFavs());
+      const isFovorite = favorites.some((item) => item.id === id);
+      if (isFovorite) {
+        setFavorited(true);
+      }
+    }
+    if (getInProgress()) {
+      const recipesInProgress = JSON.parse(getInProgress());
+      const recipeKeys = Object.keys(JSON.parse(getInProgress()));
+      const inProgressRecipesKeys = Object.keys(recipesInProgress[recipeKeys[0]]);
+      console.log(inProgressRecipesKeys);
+      if (inProgressRecipesKeys.includes(id)) {
+        setStatusProgress('Continue');
+      }
+    }
   }, [id]);
 
   useEffect(() => {
-    const arrIng = [];
-    const arrMeasure = [];
-    const fifth = 15;
+    const arrIng = []; const arrMeasure = []; const fifth = 15;
     const getIngredients = async () => {
       for (let i = 1; i <= fifth; i += 1) {
         arrIng.push(recipe[`strIngredient${i}`]);
         arrMeasure.push(recipe[`strMeasure${i}`]);
       }
-      console.log(arrIng);
       setIngredients(arrIng);
       setMeasure(arrMeasure);
     };
@@ -59,7 +73,6 @@ function RecipeDetails({ type, match, history }) {
   const cat = type === 'meals' ? recipe.strCategory : recipe.strAlcoholic;
 
   const startRecipeClick = () => {
-    setInProgress(recipe);
     history.push(`${history.location.pathname}/in-progress`);
   };
 
@@ -82,14 +95,21 @@ function RecipeDetails({ type, match, history }) {
       favorite.alcoholicOrNot = recipe.strAlcoholic;
       favorite.nationality = '';
     }
-    if (getFavs('favoriteRecipes')) {
-      const favs = JSON.parse(getFavs('favoriteRecipes'));
-      favs.push(favorite);
-      saveFav(JSON.stringify(favs));
+    if (!favorited) {
+      if (getFavs()) {
+        const favs = JSON.parse(getFavs());
+        favs.push(favorite);
+        saveFav(JSON.stringify(favs));
+      } else {
+        const favs = [favorite];
+        saveFav(JSON.stringify(favs));
+      }
     } else {
-      const favs = [favorite];
-      saveFav(JSON.stringify(favs));
+      const favs = JSON.parse(getFavs());
+      const newFavs = favs.filter((item) => item.id !== id);
+      saveFav(JSON.stringify(newFavs));
     }
+    setFavorited(!favorited);
   };
 
   return (
@@ -108,9 +128,7 @@ function RecipeDetails({ type, match, history }) {
         <p
           data-testid="recipe-category"
         >
-          Category:
-          {' '}
-          { cat }
+          {`Category: ${cat}`}
         </p>
         <div>
           <button
@@ -128,10 +146,13 @@ function RecipeDetails({ type, match, history }) {
           <button
             className="share-btn"
             type="button"
-            data-testid="favorite-btn"
             onClick={ favoriteClick }
           >
-            <img src={ whiteHeartIcon } alt="Favorite Icon" />
+            <img
+              data-testid="favorite-btn"
+              src={ favorited ? blackHeartIcon : whiteHeartIcon }
+              alt="Favorite Icon"
+            />
           </button>
         </div>
         <ul>
@@ -143,9 +164,7 @@ function RecipeDetails({ type, match, history }) {
                   key={ `${index}-ingredient-name-and-measure` }
                   data-testid={ `${index}-ingredient-name-and-measure` }
                 >
-                  { ing }
-                  {' '}
-                  { measure[index] }
+                  { `${ing} ${measure[index]}` }
                 </li>) : null;
             }
             return ing !== null ? (
@@ -153,9 +172,7 @@ function RecipeDetails({ type, match, history }) {
                 key={ `${index}-ingredient-name-and-measure` }
                 data-testid={ `${index}-ingredient-name-and-measure` }
               >
-                { ing }
-                {' '}
-                { measure[index] }
+                { `${ing} ${measure[index]}` }
               </li>) : null;
           })}
         </ul>
@@ -187,9 +204,8 @@ function RecipeDetails({ type, match, history }) {
           type="button"
           onClick={ startRecipeClick }
         >
-          Start Recipe
+          {`${statusProgress} Recipe`}
         </button>
-        {/* <Footer /> */}
       </footer>
     </main>
   );

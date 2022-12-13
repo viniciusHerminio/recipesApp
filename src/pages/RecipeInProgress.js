@@ -66,6 +66,35 @@ function RecipeInProgress({ type }) {
   }, [thisRecipe]);
 
   const handleFinish = () => {
+    const drinkOrMeal = type === 'meals' ? 'meal' : 'drink';
+    const alcoholicOrNot = type === 'meals' ? '' : thisRecipe.strAlcoholic;
+    const nationality = type === 'meals' ? thisRecipe.strArea : '';
+    const local = JSON.parse(localStorage.getItem('doneRecipes'));
+    const findId = type === 'meals' ? 'idMeal' : 'idDrink';
+    const tags = type !== 'meals' || thisRecipe.strTags === null ? []
+      : thisRecipe.strTags.split(',');
+    const date = new Date();
+    const obj = {
+      id: thisRecipe[findId],
+      type: drinkOrMeal,
+      nationality,
+      category: thisRecipe.strCategory,
+      alcoholicOrNot,
+      name: title,
+      image: thumb,
+      doneDate: date,
+      tags,
+    };
+    if (local) {
+      if (!local.some((el) => el[findId] === thisRecipe[findId])) {
+        local.push(obj);
+        localStorage.setItem('doneRecipes', JSON.stringify(local));
+      }
+    } else {
+      const arr = [];
+      arr.push(obj);
+      localStorage.setItem('doneRecipes', JSON.stringify(arr));
+    }
     history.push('/done-recipes');
   };
 
@@ -117,8 +146,22 @@ function RecipeInProgress({ type }) {
           { measure === undefined ? <h2>Loading...</h2> : (
             <ul>
               Ingredients
-              {ingredient.map((ing, index) => (
-                ing !== '' && ing !== null ? (
+              {ingredient.map((ing, index) => {
+                if (type === 'meals') {
+                  return ing !== '' ? (
+                    <CheckBox
+                      ing={ ing }
+                      measure={ measure[index] }
+                      key={ `${index}-ingredient-step` }
+                      index={ index }
+                      setIngredientsProgress={ setIngredientsProgress }
+                      title={ title }
+                      ingredientsProgress={ ingredientsProgress[index] === true }
+                      allIngs={ ingredientsProgress }
+                      ings={ ingredient }
+                    />) : null;
+                }
+                return ing !== '' && ing !== null ? (
                   <CheckBox
                     ing={ ing }
                     measure={ measure[index] }
@@ -129,8 +172,8 @@ function RecipeInProgress({ type }) {
                     ingredientsProgress={ ingredientsProgress[index] === true }
                     allIngs={ ingredientsProgress }
                     ings={ ingredient }
-                  />) : null
-              ))}
+                  />) : null;
+              })}
             </ul>)}
           <button
             data-testid="finish-recipe-btn"

@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 import PropTypes from 'prop-types';
-// import { useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import RecipesAppContext from '../context/RecipesAppContext';
 import { radioIngredientsApi, radioNamesApi,
   radioFirstLetterApi, radioDrinksIngredientsApi,
@@ -9,40 +9,46 @@ import { radioIngredientsApi, radioNamesApi,
 function SearchBar() {
   const { searchInput,
     radioInput,
-    setRadioinput, historyPathname } = useContext(RecipesAppContext);
+    setRadioinput } = useContext(RecipesAppContext);
+  const history = useHistory();
 
   const searchClickMeals = async () => {
-    // console.log(searchInput);
-    if (radioInput === 'ingredient') await radioIngredientsApi(searchInput);
-    if (radioInput === 'name') await radioNamesApi(searchInput);
+    let result = [];
+    if (radioInput === 'ingredient') result = await radioIngredientsApi(searchInput);
+    if (radioInput === 'name') result = await radioNamesApi(searchInput);
     if (radioInput === 'first-letter') {
       if (searchInput.length > 1) {
         global.alert('Your search must have only 1 (one) character');
       } else {
-        await radioFirstLetterApi(searchInput);
+        result = await radioFirstLetterApi(searchInput);
       }
     }
+    return result;
   };
 
   const searchClickDrinks = async () => {
-    if (radioInput === 'ingredient') await radioDrinksIngredientsApi(searchInput);
-    if (radioInput === 'name') await radioDrinksNamesApi(searchInput);
+    let result = [];
+    if (radioInput === 'ingredient') {
+      result = await radioDrinksIngredientsApi(searchInput);
+    }
+    if (radioInput === 'name') result = await radioDrinksNamesApi(searchInput);
     if (radioInput === 'first-letter') {
       if (searchInput.length > 1) {
         global.alert('Your search must have only 1 (one) character');
       } else {
-        await radioDrinksFirstLetterApi(searchInput);
+        result = await radioDrinksFirstLetterApi(searchInput);
       }
     }
+    return result;
   };
-  const searchClick = () => {
-    if (historyPathname === '/meals') {
-      searchClickMeals();
+
+  const searchClick = async () => {
+    if (history.location.pathname === '/meals') {
+      console.log(await searchClickMeals());
     } else {
-      searchClickDrinks();
+      console.log(await searchClickDrinks());
     }
   };
-  // console.log(searchClick);
 
   return (
     <div>

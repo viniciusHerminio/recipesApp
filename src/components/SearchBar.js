@@ -1,12 +1,15 @@
 import { useContext } from 'react';
+import PropTypes from 'prop-types';
+// import { useHistory } from 'react-router-dom';
 import RecipesAppContext from '../context/RecipesAppContext';
 import { radioIngredientsApi, radioNamesApi,
-  radioFirstLetterApi } from '../services/radioInputApi';
+  radioFirstLetterApi, radioDrinksIngredientsApi,
+  radioDrinksNamesApi, radioDrinksFirstLetterApi } from '../services/radioInputApi';
 
 function SearchBar() {
   const { searchInput,
     radioInput,
-    setRadioinput } = useContext(RecipesAppContext);
+    setRadioinput, historyPathname } = useContext(RecipesAppContext);
 
   const searchClickMeals = async () => {
     // console.log(searchInput);
@@ -21,23 +24,26 @@ function SearchBar() {
     }
   };
 
-  // const searchClickDrinks = () => {
-  //   if (radioInput === 'ingredient') {
-  //     radioDrinksIngredientsApi(searchInput);
-  //   }
-  //   if (radioInput === 'name') {
-  //     radioDrinksNamesApi(searchInput);
-  //   }
-  //   if (radioInput === 'first-letter' && searchInput.length > 1) {
-  //     global.alert('Your search must have only 1 (one) character');
-  //   }
-  //   radioDrinksFirstLetterApi(searchInput);
-  // };
+  const searchClickDrinks = async () => {
+    if (radioInput === 'ingredient') await radioDrinksIngredientsApi(searchInput);
+    if (radioInput === 'name') await radioDrinksNamesApi(searchInput);
+    if (radioInput === 'first-letter') {
+      if (searchInput.length > 1) {
+        global.alert('Your search must have only 1 (one) character');
+      } else {
+        await radioDrinksFirstLetterApi(searchInput);
+      }
+    }
+  };
+  const searchClick = () => {
+    if (historyPathname === '/meals') {
+      searchClickMeals();
+    } else {
+      searchClickDrinks();
+    }
+  };
+  // console.log(searchClick);
 
-  // const HandleClick = () => {
-  // };
-
-  // console.log(setRadioinput);
   return (
     <div>
       <label htmlFor="ingredient">
@@ -77,12 +83,20 @@ function SearchBar() {
       <button
         type="button"
         data-testid="exec-search-btn"
-        onClick={ searchClickMeals }
+        onClick={ searchClick }
       >
         Search
       </button>
     </div>
   );
 }
+
+SearchBar.propTypes = ({
+  history: PropTypes.shape({
+    location: PropTypes.shape({
+      pathname: PropTypes.string,
+    }),
+  }),
+}).isRequired;
 
 export default SearchBar;

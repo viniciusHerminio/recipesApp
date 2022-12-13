@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
+import RecipesAppContext from '../context/RecipesAppContext';
 import {
   foodsAPI, foodsCategoryAPI, fetchFoodByCategory,
 } from '../services/foodsAPI';
@@ -7,7 +8,7 @@ import Header from './Header';
 import SearchBar from './SearchBar';
 
 function Recipes() {
-  const [foods, setFoods] = useState();
+  const { foods, setFoods } = useContext(RecipesAppContext);
   const [foodsCategory, setFoodsCategory] = useState();
   const history = useHistory();
   // const [filterCat, setFilterCat] = useState('');

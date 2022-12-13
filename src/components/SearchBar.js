@@ -1,5 +1,4 @@
 import { useContext } from 'react';
-import PropTypes from 'prop-types';
 import { useHistory } from 'react-router-dom';
 import RecipesAppContext from '../context/RecipesAppContext';
 import { radioIngredientsApi, radioNamesApi,
@@ -97,12 +96,12 @@ function SearchBar() {
   );
 }
 
-SearchBar.propTypes = ({
-  history: PropTypes.shape({
-    location: PropTypes.shape({
-      pathname: PropTypes.string,
-    }),
-  }),
-}).isRequired;
+// SearchBar.propTypes = ({
+//   history: PropTypes.shape({
+//     location: PropTypes.shape({
+//       pathname: PropTypes.string,
+//     }),
+//   }),
+// }).isRequired;
 
 export default SearchBar;

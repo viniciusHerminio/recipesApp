@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-import { foodsAPI, foodsCategoryAPI } from '../services/foodsAPI';
+import {
+  foodsAPI, foodsCategoryAPI, fetchFoodByCategory,
+} from '../services/foodsAPI';
 import Header from './Header';
 import SearchBar from './SearchBar';
 
@@ -14,17 +16,21 @@ function Recipes() {
     return data.meals;
   };
 
+  const withoutFilter = () => {
+    getInitialFoods().then((data) => {
+      const limit = 12;
+      const initialMeals = data.filter((_food, index) => index < limit);
+      setFoods(initialMeals);
+    });
+  };
+
   const getFoodsCategory = async () => {
     const data = await foodsCategoryAPI();
     return data.meals;
   };
 
   useEffect(() => {
-    getInitialFoods().then((data) => {
-      const limit = 12;
-      const initialMeals = data.filter((_food, index) => index < limit);
-      setFoods(initialMeals);
-    });
+    withoutFilter();
     getFoodsCategory().then((data) => {
       const limit = 5;
       const categories = data.filter((_category, index) => index < limit);
@@ -34,6 +40,16 @@ function Recipes() {
 
   const handleClick = (id) => {
     history.push(`/meals/${id}`);
+  };
+
+  const handleFilterCat = async (cat) => {
+    const limit = 12;
+    const f = await fetchFoodByCategory(cat);
+    if (f.length > limit) {
+      setFoods(f.filter((_food, index) => index < limit));
+    } else {
+      setFoods(f);
+    }
   };
 
   return (
@@ -46,10 +62,18 @@ function Recipes() {
           type="button"
           key={ index }
           data-testid={ `${item.strCategory}-category-filter` }
+          onClick={ () => handleFilterCat(item.strCategory) }
         >
           {item.strCategory}
         </button>
       )) }
+      <button
+        type="button"
+        data-testid="All-category-filter"
+        onClick={ () => withoutFilter() }
+      >
+        All
+      </button>
 
       { typeof foods === typeof [] && foods.map((item, index) => (
         <button
@@ -66,10 +90,8 @@ function Recipes() {
           />
           <span data-testid={ `${index}-card-name` }>{item.strMeal}</span>
         </button>
-        // </Link>
       )) }
     </div>
-
   );
 }
 

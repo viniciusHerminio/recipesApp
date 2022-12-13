@@ -7,7 +7,6 @@ function RecipesAppProvider({ children }) {
   const [radioInput, setRadioinput] = useState('');
   const [inProgress, setInProgress] = useState([]);
   const [isDisabled, setDisabled] = useState(true);
-  const [historyPathname, setHistory] = useState('');
 
   const value = useMemo(() => ({
     searchInput,
@@ -18,12 +17,10 @@ function RecipesAppProvider({ children }) {
     setInProgress,
     isDisabled,
     setDisabled,
-    historyPathname,
-    setHistory,
   }), [searchInput,
     setSearchInput,
     radioInput,
-    setRadioinput, inProgress, isDisabled, historyPathname]);
+    setRadioinput, inProgress, isDisabled]);
 
   return (
     <RecipesAppContext.Provider value={ value }>

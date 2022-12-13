@@ -15,3 +15,9 @@ export const fetchDrinksById = async (id) => {
   const fetching = await fetch(url).then((res) => res.json());
   return fetching.drinks;
 };
+
+export const fetchDrinksByCategory = async (cat) => {
+  const url = `https://www.thecocktaildb.com/api/json/v1/1/filter.php?c=${cat}`;
+  const fetching = await fetch(url).then((res) => res.json());
+  return fetching.drinks;
+};

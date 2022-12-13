@@ -15,3 +15,9 @@ export const fetchFoodById = async (id) => {
   const fetching = await fetch(url).then((res) => res.json());
   return fetching.meals;
 };
+
+export const fetchFoodByCategory = async (cat) => {
+  const url = `https://www.themealdb.com/api/json/v1/1/filter.php?c=${cat}`;
+  const fetching = await fetch(url).then((res) => res.json());
+  return fetching.meals;
+};

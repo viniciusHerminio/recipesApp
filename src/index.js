@@ -13,7 +13,6 @@ ReactDOM
       <RecipesAppProvider>
         <App />
       </RecipesAppProvider>
-      ,
     </BrowserRouter>,
   );
 // context

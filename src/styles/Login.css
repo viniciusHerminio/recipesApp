@@ -1,0 +1,78 @@
+@import './colors.css' ;
+
+.login-body {
+  background-color: var(--purple);
+  background-image: linear-gradient(var(--purple) 80%, whitesmoke 20%);
+}
+
+.logo-images {
+  height: 464px;
+  position: relative;
+}
+
+.logo-images :first-child {
+  left: 145px;
+  position: absolute;
+  top: 79.17px;
+  width: 210px;
+}
+
+.logo-images :last-child {
+  height: 395px;
+  position: absolute;
+  top: 224px;
+  width: 100vw;
+}
+
+.form-login {
+  background-color: whitesmoke;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  height: 312px;
+  justify-content: center;
+  padding-top: 85px;
+}
+
+.form-login h4 {
+  color: var(--purple);
+  font-size: 20px;
+  font-style: italic;
+  font-weight: 500;
+  letter-spacing: 0.165em;
+  line-height: 20px;
+  text-align: center;
+  text-transform: uppercase;
+  margin-bottom: 15px;
+}
+
+.form-login input, button {
+  border-radius: 4px;
+  border-width: thin;
+  height: 36px;
+  margin: 0 auto;
+  width: 276px;
+}
+
+.form-login input, input::placeholder {
+  border-color: var(--whitePurple);
+  color: var(--whitePurple);
+  height: 40px;
+  padding-left: 8px;
+  width: 276px;
+}
+
+.form-login button {
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  line-height: 14px;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.form-login button:enabled {
+  background-color: var(--orangeYellow);
+  color: white;
+}

@@ -8,8 +8,24 @@ import { radioIngredientsApi, radioNamesApi,
 function SearchBar() {
   const { searchInput,
     radioInput,
-    setRadioinput } = useContext(RecipesAppContext);
+    setRadioinput, setFoods, setDrinks } = useContext(RecipesAppContext);
   const history = useHistory();
+
+  const verificaArray = (arr) => {
+    const id = history.location.pathname === '/meals' ? 'idMeal' : 'idDrink';
+    const set = history.location.pathname === '/meals' ? setFoods : setDrinks;
+    if (arr === null) {
+      global.alert('Sorry, we haven\'t found any recipes for these filters.');
+      console.log(arr);
+    } else if (arr.length > 1) {
+      const limite = 12;
+      const arrLimite = arr.filter((_a, index) => index < limite);
+      set(arrLimite);
+    } else if (arr.length === 1) {
+      history.push(`${history.location.pathname}/${arr[0][id]}`);
+      // console.log(arr[0][id]);
+    }
+  };
 
   const searchClickMeals = async () => {
     let result = [];
@@ -22,7 +38,7 @@ function SearchBar() {
         result = await radioFirstLetterApi(searchInput);
       }
     }
-    return result;
+    verificaArray(result);
   };
 
   const searchClickDrinks = async () => {
@@ -38,14 +54,14 @@ function SearchBar() {
         result = await radioDrinksFirstLetterApi(searchInput);
       }
     }
-    return result;
+    verificaArray(result);
   };
 
   const searchClick = async () => {
     if (history.location.pathname === '/meals') {
-      console.log(await searchClickMeals());
+      await searchClickMeals();
     } else {
-      console.log(await searchClickDrinks());
+      await searchClickDrinks();
     }
   };
 

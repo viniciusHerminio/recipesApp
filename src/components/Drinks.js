@@ -4,6 +4,7 @@ import {
   drinksAPI, drinksCategoryAPI, fetchDrinksByCategory,
 } from '../services/drinksAPI';
 import Header from './Header';
+import SearchBar from './SearchBar';
 
 function Recipes() {
   const [drinks, setDrinks] = useState();
@@ -54,6 +55,7 @@ function Recipes() {
   return (
     <div>
       <Header profileUser search>Drinks</Header>
+      <SearchBar />
       { typeof drinksCategory === typeof [] && drinksCategory.map((item, index) => (
         <button
           type="button"

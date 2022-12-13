@@ -10,6 +10,8 @@ function Recipes() {
   const [foods, setFoods] = useState();
   const [foodsCategory, setFoodsCategory] = useState();
   const history = useHistory();
+  // const [filterCat, setFilterCat] = useState('');
+  // const [filteredFoods, setFilteredFoods] = useState([]);
 
   const getInitialFoods = async () => {
     const data = await foodsAPI();

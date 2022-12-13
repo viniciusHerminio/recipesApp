@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-import { drinksAPI, drinksCategoryAPI } from '../services/drinksAPI';
+import {
+  drinksAPI, drinksCategoryAPI, fetchDrinksByCategory,
+} from '../services/drinksAPI';
 import Header from './Header';
 
 function Recipes() {
@@ -13,17 +15,21 @@ function Recipes() {
     return data.drinks;
   };
 
+  const withoutFilter = () => {
+    getInitialDrinks().then((data) => {
+      const limit = 12;
+      const initialDrinks = data.filter((_food, index) => index < limit);
+      setDrinks(initialDrinks);
+    });
+  };
+
   const getDrinksCategory = async () => {
     const data = await drinksCategoryAPI();
     return data.drinks;
   };
 
   useEffect(() => {
-    getInitialDrinks().then((data) => {
-      const limit = 12;
-      const initialDrinks = data.filter((_drinks, index) => index < limit);
-      setDrinks(initialDrinks);
-    });
+    withoutFilter();
     getDrinksCategory().then((data) => {
       const limit = 5;
       const categories = data.filter((_category, index) => index < limit);
@@ -35,6 +41,16 @@ function Recipes() {
     history.push(`/drinks/${id}`);
   };
 
+  const handleFilterCat = async (cat) => {
+    const limit = 12;
+    const d = await fetchDrinksByCategory(cat);
+    if (d.length > limit) {
+      setDrinks(d.filter((_food, index) => index < limit));
+    } else {
+      setDrinks(d);
+    }
+  };
+
   return (
     <div>
       <Header profileUser search>Drinks</Header>
@@ -43,10 +59,18 @@ function Recipes() {
           type="button"
           key={ index }
           data-testid={ `${item.strCategory}-category-filter` }
+          onClick={ () => handleFilterCat(item.strCategory) }
         >
           {item.strCategory}
         </button>
       )) }
+      <button
+        type="button"
+        data-testid="All-category-filter"
+        onClick={ () => withoutFilter() }
+      >
+        All
+      </button>
 
       { typeof drinks === typeof [] && drinks.map((item, index) => (
         <button

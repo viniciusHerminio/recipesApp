@@ -5,4 +5,3 @@ export const saveFav = (recipe) => {
 export const getFavs = () => localStorage.getItem('favoriteRecipes');
 
 export const getInProgress = () => localStorage.getItem('inProgressRecipes');
-

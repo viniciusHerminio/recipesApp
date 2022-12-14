@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import copy from 'clipboard-copy';
 import { TbArrowNarrowLeft } from 'react-icons/tb';
+import { useHistory } from 'react-router-dom';
 import Slider from '../components/Slider';
 import { fetchDrinksById, drinksAPI } from '../services/drinksAPI';
 import { fetchFoodById, foodsAPI } from '../services/foodsAPI';
@@ -10,8 +11,9 @@ import '../styles/RecipeDetails.css';
 import shareIcon from '../images/shareIcon.svg';
 import whiteHeartIcon from '../images/whiteHeartIcon.svg';
 import blackHeartIcon from '../images/blackHeartIcon.svg';
+import IngredientList from '../components/IngredientList';
 
-function RecipeDetails({ type, match, history }) {
+function RecipeDetails({ type, match }) {
   const { id } = match.params;
   const [recipe, setRecipe] = useState([]);
   const [video, setvideo] = useState('');
@@ -21,6 +23,7 @@ function RecipeDetails({ type, match, history }) {
   const [copied, setCopied] = useState(false);
   const [favorited, setFavorited] = useState(false);
   const [statusProgress, setStatusProgress] = useState('Start');
+  const history = useHistory();
 
   useEffect(() => {
     const test = async () => {
@@ -49,7 +52,6 @@ function RecipeDetails({ type, match, history }) {
       const recipesInProgress = JSON.parse(getInProgress());
       const recipeKeys = Object.keys(JSON.parse(getInProgress()));
       const inProgressRecipesKeys = Object.keys(recipesInProgress[recipeKeys[0]]);
-      // console.log(inProgressRecipesKeys);
       if (inProgressRecipesKeys.includes(id)) {
         setStatusProgress('Continue');
       }
@@ -79,7 +81,9 @@ function RecipeDetails({ type, match, history }) {
 
   const shareClick = () => {
     copy(`http://localhost:3000${history.location.pathname}`);
+    const time = 15000;
     setCopied(true);
+    setTimeout(setCopied, time);
   };
 
   const favoriteClick = () => {
@@ -171,26 +175,7 @@ function RecipeDetails({ type, match, history }) {
         </p>
         { copied && <span>Link copied!</span> }
         <h3> Ingredients </h3>
-        <ul>
-          {ingredients.map((ing, index) => {
-            if (type === 'meals') {
-              return ing !== '' ? (
-                <li
-                  key={ `${index}-ingredient-name-and-measure` }
-                  data-testid={ `${index}-ingredient-name-and-measure` }
-                >
-                  { `${ing} ${measure[index]}` }
-                </li>) : null;
-            }
-            return ing !== null ? (
-              <li
-                key={ `${index}-ingredient-name-and-measure` }
-                data-testid={ `${index}-ingredient-name-and-measure` }
-              >
-                { `${ing} ${measure[index]}` }
-              </li>) : null;
-          })}
-        </ul>
+        <IngredientList ingredients={ ingredients } measure={ measure } type={ type } />
         <h3>
           Instructions
         </h3>
@@ -232,13 +217,6 @@ RecipeDetails.propTypes = {
     }),
   }).isRequired,
   type: PropTypes.string.isRequired,
-  history: PropTypes.shape({
-    push: PropTypes.func,
-    location: PropTypes.shape({
-      pathname: PropTypes.string,
-    }),
-    goBack: PropTypes.func,
-  }).isRequired,
 };
 
 export default RecipeDetails;

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Header from '../components/Header';
 import ShareIcon from '../images/shareIcon.svg';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const copy = require('clipboard-copy');
 
@@ -66,6 +67,7 @@ function DoneRecipes() {
               src={ e.image }
               alt={ e.name }
               data-testid={ `${index}-horizontal-image` }
+              className="w-25"
             />
             <p data-testid={ `${index}-horizontal-name` }>{e.name}</p>
           </Link>

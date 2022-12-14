@@ -10,6 +10,8 @@ import SearchBar from './SearchBar';
 function Recipes() {
   const { drinks, setDrinks } = useContext(RecipesAppContext);
   const [drinksCategory, setDrinksCategory] = useState();
+  const [nameCategory, setNameCategory] = useState('');
+  const [cont, setCont] = useState(0);
   const history = useHistory();
 
   const getInitialDrinks = async () => {
@@ -46,11 +48,20 @@ function Recipes() {
   const handleFilterCat = async (cat) => {
     const limit = 12;
     const d = await fetchDrinksByCategory(cat);
+    if (nameCategory === cat && cont >= 1) {
+      setCont(0);
+      setDrinks(d.filter((_food, index) => index < limit));
+    }
+    if (nameCategory === cat && cont < 1) {
+      withoutFilter();
+      setCont(cont + 1);
+    } else setCont(0);
     if (d.length > limit) {
       setDrinks(d.filter((_food, index) => index < limit));
     } else {
       setDrinks(d);
     }
+    setNameCategory(cat);
   };
 
   return (

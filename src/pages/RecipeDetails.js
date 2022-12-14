@@ -114,37 +114,19 @@ function RecipeDetails({ type, match, history }) {
 
   return (
     <main className="recipe">
-      <section className="recipe-item">
-        <h2
-          data-testid="recipe-title"
-        >
-          { title }
-        </h2>
+      {/* <section className="recipe-item"> */}
+      <div className="div-recipe-img">
         <img
           data-testid="recipe-photo"
           src={ thumb }
           alt={ title }
         />
-        <p
-          data-testid="recipe-category"
-        >
-          {`Category: ${cat}`}
-        </p>
-        <div>
+      </div>
+      <div className="recipe-content">
+        <div className="div-flat-bar">
+          <div className="flat-bar" />
           <button
-            className="share-btn"
-            type="button"
-            data-testid="share-btn"
-            onClick={ shareClick }
-          >
-            <img
-              src={ shareIcon }
-              alt="Share Icon"
-            />
-          </button>
-          { copied && <span>Link copied!</span> }
-          <button
-            className="share-btn"
+            className="fav-btn"
             type="button"
             onClick={ favoriteClick }
           >
@@ -155,6 +137,28 @@ function RecipeDetails({ type, match, history }) {
             />
           </button>
         </div>
+        <h2
+          data-testid="recipe-title"
+        >
+          { title }
+        </h2>
+        <button
+          className="share-btn"
+          type="button"
+          data-testid="share-btn"
+          onClick={ shareClick }
+        >
+          <img
+            src={ shareIcon }
+            alt="Share Icon"
+          />
+        </button>
+        <p
+          data-testid="recipe-category"
+        >
+          {`Category: ${cat}`}
+        </p>
+        { copied && <span>Link copied!</span> }
         <ul>
           Ingredients
           {ingredients.map((ing, index) => {
@@ -193,7 +197,7 @@ function RecipeDetails({ type, match, history }) {
           /> : null
         }
         <Slider recipes={ recipes } type={ type } />
-      </section>
+      </div>
       <footer
         className="position-fixed fixed-bottom"
         data-testid="footer"

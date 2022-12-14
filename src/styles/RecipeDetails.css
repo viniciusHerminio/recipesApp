@@ -5,24 +5,79 @@
   width: 100%;
 }
 
-.recipe-item {
-  margin-bottom: 30px;
-}
-
-.recipe-item img {
+.div-recipe-img {
   position: relative;
-  width: 360px;
+  height: 400px;
+  /* margin: 10px; */
+  clip-path: inset(0);
+  /* border: 20px red solid; */
+  border-radius: 0 0 20px 20px;
 }
 
-.recipe-item h2 {
-  position: absolute;
-  text-align: center;
-  z-index: 20;
+.div-recipe-img img {
+  object-fit: cover;
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 0 0 20px 20px;
+}
+
+.recipe-content {
+  border-radius: 20px;
+  /* border: 2px red solid; */
+}
+
+.div-flat-bar {
+  position: relative;
+  top: -20px;
+  background-color: white;
+  width: 100%;
+  height: 21px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 30px 30px 0 0;
+}
+
+.flat-bar {
+  width: 80px;
+  height: 7px;
+  border-radius: 50px;
+  background-color: rgb(48, 47, 47);
+  /* margin: auto; */
 }
 
 .recipe header {
   position: absolute;
   z-index: 20;
+}
+
+.share-btn {
+  position: absolute;
+  border-radius: 50%;
+  /* background-color: transparent; */
+  /* border: none; */
+  right: 30px;
+  /* display: grid; */
+  align-self: center;
+  justify-self: center;
+  display: inline;
+}
+
+.fav-btn {
+  position: absolute;
+  border-radius: 50%;
+  background-color: white;
+  border: none;
+  /* bottom: 1px; */
+  right: 30px;
+  /* display: grid; */
+  align-self: center;
+  justify-self: center;
+  display: inline;
+  padding: 15px;
 }
 
 .share-btn img {

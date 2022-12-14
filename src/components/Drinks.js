@@ -1,12 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
+import RecipesAppContext from '../context/RecipesAppContext';
 import {
   drinksAPI, drinksCategoryAPI, fetchDrinksByCategory,
 } from '../services/drinksAPI';
 import Header from './Header';
+import SearchBar from './SearchBar';
 
 function Recipes() {
-  const [drinks, setDrinks] = useState();
+  const { drinks, setDrinks } = useContext(RecipesAppContext);
   const [drinksCategory, setDrinksCategory] = useState();
   const history = useHistory();
 
@@ -54,6 +56,7 @@ function Recipes() {
   return (
     <div>
       <Header profileUser search>Drinks</Header>
+      <SearchBar />
       { typeof drinksCategory === typeof [] && drinksCategory.map((item, index) => (
         <button
           type="button"

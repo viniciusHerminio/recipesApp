@@ -5,7 +5,7 @@ import { useHistory } from 'react-router-dom';
 import { fetchDrinksById, drinksAPI } from '../services/drinksAPI';
 import { fetchFoodById, foodsAPI } from '../services/foodsAPI';
 import { getFavs, saveFav, getInProgress } from '../services/localStorage';
-import '../styles/RecipeDetails.css';
+import '../styles/RecipeDefinitions.css';
 import DifferentHeader from '../components/DifferentHeader';
 import RecipeContent from '../components/RecipeContent';
 import RecipesAppContext from '../context/RecipesAppContext';

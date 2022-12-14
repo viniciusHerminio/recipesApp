@@ -1,12 +1,14 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import CheckBox from '../components/CheckBox';
 import { fetchDrinksById } from '../services/drinksAPI';
 import { fetchFoodById } from '../services/foodsAPI';
 import '../styles/RecipeInProgress.css';
-import FavBtn from '../components/FavBtn';
 import RecipesAppContext from '../context/RecipesAppContext';
+import DifferentHeader from '../components/DifferentHeader';
+import RecipeContent from '../components/RecipeContent';
+import { getFavs, saveFav } from '../services/localStorage';
+import '../styles/RecipeDefinitions.css';
 
 function RecipeInProgress({ type }) {
   const history = useHistory();
@@ -15,22 +17,29 @@ function RecipeInProgress({ type }) {
   const [measure, setMeasure] = useState([]);
   const [ingredient, setIngredient] = useState([]);
   const [ingredientsProgress, setIngredientsProgress] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const { loading, setLoading } = useContext(RecipesAppContext);
   const title = type === 'meals' ? thisRecipe.strMeal : thisRecipe.strDrink;
   const thumb = type === 'meals' ? thisRecipe.strMealThumb : thisRecipe.strDrinkThumb;
   const cat = type === 'meals' ? thisRecipe.strCategory : thisRecipe.strAlcoholic;
+  const [favorited, setFavorited] = useState(false);
+  const id = history.location.pathname.match(/\d+/)[0];
 
   const [copied, setCopied] = useState(false);
 
   useEffect(() => {
     const getIbyPath = async () => {
-      const address = history.location.pathname;
-      const id = address.match(/\d+/)[0];
       const recipe = await type === 'meals'
         ? await fetchFoodById(id) : await fetchDrinksById(id);
       setThisRecipe(recipe[0]);
     };
     getIbyPath();
+    if (getFavs()) {
+      const favorites = JSON.parse(getFavs());
+      const isFovorite = favorites.some((item) => item.id === id);
+      if (isFovorite) {
+        setFavorited(true);
+      }
+    }
   }, []);
 
   useEffect(() => {
@@ -65,6 +74,44 @@ function RecipeInProgress({ type }) {
     recipesInProg();
   }, [thisRecipe]);
 
+  const favoriteClick = () => {
+    const favorite = {
+      id,
+      type: type.substring(0, type.length - 1),
+      nationality: thisRecipe.strArea,
+      category: thisRecipe.strCategory,
+      name: title,
+      image: thumb,
+      alcoholicOrNot: '',
+    };
+    if (type === 'drinks') {
+      favorite.alcoholicOrNot = thisRecipe.strAlcoholic;
+      favorite.nationality = '';
+    }
+    if (!favorited) {
+      if (getFavs()) {
+        const favs = JSON.parse(getFavs());
+        favs.push(favorite);
+        saveFav(JSON.stringify(favs));
+      } else {
+        const favs = [favorite];
+        saveFav(JSON.stringify(favs));
+      }
+    } else {
+      const favs = JSON.parse(getFavs());
+      const newFavs = favs.filter((item) => item.id !== id);
+      saveFav(JSON.stringify(newFavs));
+    }
+    setFavorited(!favorited);
+  };
+
+  const shareClick = () => {
+    copy(`http://localhost:3000${history.location.pathname}`);
+    const time = 10000;
+    setCopied(true);
+    setTimeout(setCopied, time);
+  };
+
   const handleFinish = () => {
     const drinkOrMeal = type === 'meals' ? 'meal' : 'drink';
     const alcoholicOrNot = type === 'meals' ? '' : thisRecipe.strAlcoholic;
@@ -98,85 +145,40 @@ function RecipeInProgress({ type }) {
     history.push('/done-recipes');
   };
 
-  const copyLink = () => {
-    const time = 3000;
-    const allUrl = window.location.href;
-    const recipeUrl = allUrl.replace('/in-progress', '');
-    navigator.clipboard.writeText(recipeUrl);
-    setCopied('Link copied!');
-    setTimeout(() => setCopied(false), time);
-  };
-
   return (
-    <main id="recipe-in-progress">
-      {loading || title === undefined ? <p>LOADING...</p> : (
+    <main className="recipe-in-progress">
+      {loading || title === undefined ? <h2>LOADING...</h2> : (
         <>
-          <h2 data-testid="recipe-title">
-            { title }
-          </h2>
-          <FavBtn
-            type={ type }
-            thisRecipe={ thisRecipe }
+          <div className="div-recipe-img">
+            <img
+              src={ thumb }
+              alt={ title }
+              data-testid="recipe-photo"
+            />
+          </div>
+          <DifferentHeader
             title={ title }
-            thumb={ thumb }
+            favoriteClick={ favoriteClick }
+            shareClick={ shareClick }
+            favorited={ favorited }
           />
-          <button
-            data-testid="share-btn"
-            type="button"
-            onClick={ copyLink }
-          >
-            SHARE
-          </button>
-          { copied && <p>Link copied!</p> }
-          <img
-            src={ thumb }
-            alt={ title }
-            data-testid="recipe-photo"
+          <RecipeContent
+            favoriteClick={ favoriteClick }
+            favorited={ favorited }
+            shareClick={ shareClick }
+            copied={ copied }
+            ingredients={ ingredient }
+            measure={ measure }
+            type={ type }
+            title={ title }
+            setIngredientsProgress={ setIngredientsProgress }
+            instructions={ thisRecipe.strInstructions }
+            ingredientsProgress={ ingredientsProgress }
+            cat={ cat }
           />
-          <p
-            data-testid="recipe-category"
-          >
-            { cat }
-          </p>
-          <p
-            data-testid="instructions"
-          >
-            { thisRecipe.strInstructions }
-          </p>
-          { measure === undefined ? <h2>Loading...</h2> : (
-            <ul>
-              Ingredients
-              {ingredient.map((ing, index) => {
-                if (type === 'meals') {
-                  return ing !== '' ? (
-                    <CheckBox
-                      ing={ ing }
-                      measure={ measure[index] }
-                      key={ `${index}-ingredient-step` }
-                      index={ index }
-                      setIngredientsProgress={ setIngredientsProgress }
-                      title={ title }
-                      ingredientsProgress={ ingredientsProgress[index] === true }
-                      allIngs={ ingredientsProgress }
-                      ings={ ingredient }
-                    />) : null;
-                }
-                return ing !== '' && ing !== null ? (
-                  <CheckBox
-                    ing={ ing }
-                    measure={ measure[index] }
-                    key={ `${index}-ingredient-step` }
-                    index={ index }
-                    setIngredientsProgress={ setIngredientsProgress }
-                    title={ title }
-                    ingredientsProgress={ ingredientsProgress[index] === true }
-                    allIngs={ ingredientsProgress }
-                    ings={ ingredient }
-                  />) : null;
-              })}
-            </ul>)}
           <button
             data-testid="finish-recipe-btn"
+            className="finish-recipe-btn"
             type="button"
             onClick={ () => handleFinish() }
             disabled={ isDisabled }

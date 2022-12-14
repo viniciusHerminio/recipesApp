@@ -5,11 +5,13 @@ import shareIcon from '../images/shareIcon.svg';
 import whiteHeartIcon from '../images/whiteHeartIcon.svg';
 import blackHeartIcon from '../images/blackHeartIcon.svg';
 import IngredientList from './IngredientList';
+import ListCheckBox from './ListCheckBox';
 
 function RecipeContent({
   favoriteClick, favorited, shareClick,
   copied, ingredients, measure,
   type, title, video, recipes, instructions, cat,
+  setIngredientsProgress, ingredientsProgress,
 }) {
   return (
     <div className="recipe-content">
@@ -51,9 +53,23 @@ function RecipeContent({
       >
         { cat }
       </p>
-      { copied && <span>Link copied!</span> }
+      { copied && <span className="copied">Link copied!</span> }
       <h3> Ingredients </h3>
-      <IngredientList ingredients={ ingredients } measure={ measure } type={ type } />
+      { recipes.length === 0 ? (
+        <ListCheckBox
+          title={ title }
+          ingredients={ ingredients }
+          type={ type }
+          measure={ measure }
+          ingredientsProgress={ ingredientsProgress }
+          setIngredientsProgress={ setIngredientsProgress }
+        />)
+        : (
+          <IngredientList
+            ingredients={ ingredients }
+            measure={ measure }
+            type={ type }
+          />)}
       <h3>
         Instructions
       </h3>
@@ -61,7 +77,7 @@ function RecipeContent({
         { instructions }
       </p>
       {
-        type === 'meals' ? <iframe
+        type === 'meals' && video !== '' ? <iframe
           title={ title }
           src={ video }
           data-testid="video"
@@ -69,10 +85,18 @@ function RecipeContent({
           allowFullScreen
         /> : null
       }
-      <Slider recipes={ recipes } type={ type } />
+      { recipes.length !== 0
+      && <Slider recipes={ recipes } type={ type } /> }
     </div>
   );
 }
+
+RecipeContent.defaultProps = {
+  video: '',
+  recipes: [],
+  ingredientsProgress: [],
+  setIngredientsProgress: '',
+};
 
 RecipeContent.propTypes = {
   favoriteClick: PropTypes.func.isRequired,
@@ -85,10 +109,12 @@ RecipeContent.propTypes = {
   measure: PropTypes.shape([]).isRequired,
   type: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
-  video: PropTypes.string.isRequired,
-  recipes: PropTypes.shape([]).isRequired,
+  video: PropTypes.string,
+  recipes: PropTypes.shape([]),
   instructions: PropTypes.string.isRequired,
   cat: PropTypes.string.isRequired,
+  ingredientsProgress: PropTypes.shape([]),
+  setIngredientsProgress: PropTypes.func,
 };
 
 export default RecipeContent;

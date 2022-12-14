@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import copy from 'clipboard-copy';
+import { TbArrowNarrowLeft } from 'react-icons/tb';
 import Slider from '../components/Slider';
 import { fetchDrinksById, drinksAPI } from '../services/drinksAPI';
 import { fetchFoodById, foodsAPI } from '../services/foodsAPI';
@@ -48,7 +49,7 @@ function RecipeDetails({ type, match, history }) {
       const recipesInProgress = JSON.parse(getInProgress());
       const recipeKeys = Object.keys(JSON.parse(getInProgress()));
       const inProgressRecipesKeys = Object.keys(recipesInProgress[recipeKeys[0]]);
-      console.log(inProgressRecipesKeys);
+      // console.log(inProgressRecipesKeys);
       if (inProgressRecipesKeys.includes(id)) {
         setStatusProgress('Continue');
       }
@@ -116,6 +117,13 @@ function RecipeDetails({ type, match, history }) {
     <main className="recipe">
       {/* <section className="recipe-item"> */}
       <div className="div-recipe-img">
+        <header>
+          <TbArrowNarrowLeft
+            color="#FE4900"
+            fontSize="40px"
+            onClick={ () => history.goBack() }
+          />
+        </header>
         <img
           data-testid="recipe-photo"
           src={ thumb }
@@ -137,30 +145,33 @@ function RecipeDetails({ type, match, history }) {
             />
           </button>
         </div>
-        <h2
-          data-testid="recipe-title"
-        >
-          { title }
-        </h2>
-        <button
-          className="share-btn"
-          type="button"
-          data-testid="share-btn"
-          onClick={ shareClick }
-        >
-          <img
-            src={ shareIcon }
-            alt="Share Icon"
-          />
-        </button>
+        <div className="a">
+          <h2
+            data-testid="recipe-title"
+          >
+            { title }
+          </h2>
+          <button
+            className="share-btn"
+            type="button"
+            data-testid="share-btn"
+            onClick={ shareClick }
+          >
+            <img
+              src={ shareIcon }
+              alt="Share Icon"
+            />
+          </button>
+        </div>
         <p
+          className="recipe-category"
           data-testid="recipe-category"
         >
-          {`Category: ${cat}`}
+          { cat }
         </p>
         { copied && <span>Link copied!</span> }
+        <h3> Ingredients </h3>
         <ul>
-          Ingredients
           {ingredients.map((ing, index) => {
             if (type === 'meals') {
               return ing !== '' ? (
@@ -183,7 +194,7 @@ function RecipeDetails({ type, match, history }) {
         <h3>
           Instructions
         </h3>
-        <p data-testid="instructions">
+        <p data-testid="instructions" className="instructions">
           { recipe.strInstructions }
         </p>
         {
@@ -191,7 +202,6 @@ function RecipeDetails({ type, match, history }) {
             title={ title }
             src={ video }
             data-testid="video"
-            frameBorder="0"
             allow="autoplay; encrypted-media"
             allowFullScreen
           /> : null
@@ -199,7 +209,7 @@ function RecipeDetails({ type, match, history }) {
         <Slider recipes={ recipes } type={ type } />
       </div>
       <footer
-        className="position-fixed fixed-bottom"
+        className="position-fixed fixed-bottom footer-recipe"
         data-testid="footer"
       >
         <button
@@ -227,6 +237,7 @@ RecipeDetails.propTypes = {
     location: PropTypes.shape({
       pathname: PropTypes.string,
     }),
+    goBack: PropTypes.func,
   }).isRequired,
 };
 

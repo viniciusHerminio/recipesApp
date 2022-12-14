@@ -13,8 +13,12 @@
 }
 
 .slider-recipe-img {
-  border: 2px red solid;
   border-radius: 12px;
   max-width: 200px;
   pointer-events: none;
+}
+
+.slider-recipe-btn {
+  border: none;
+  background-color: transparent;
 }

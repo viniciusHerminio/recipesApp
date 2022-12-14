@@ -1,85 +1,110 @@
 .start-recipe-btn {
-  border: 2px red solid;
+  background: #fe4900;
+  border: none;
+  border-radius: 10px;
   bottom: 0;
+  color: white;
+  font-weight: 900;
+  height: 35px;
   position: fixed;
-  width: 100%;
+  width: 80%;
+}
+
+.footer-recipe {
+  display: flex;
+  justify-content: center;
 }
 
 .div-recipe-img {
-  position: relative;
-  height: 400px;
-  /* margin: 10px; */
-  clip-path: inset(0);
-  /* border: 20px red solid; */
   border-radius: 0 0 20px 20px;
+  clip-path: inset(0);
+  height: 400px;
+  position: relative;
 }
 
 .div-recipe-img img {
+  border-radius: 0 0 20px 20px;
+  height: 100%;
+  left: 0;
   object-fit: cover;
   position: fixed;
-  left: 0;
   top: 0;
   width: 100%;
-  height: 100%;
-  border-radius: 0 0 20px 20px;
-}
-
-.recipe-content {
-  border-radius: 20px;
-  /* border: 2px red solid; */
 }
 
 .div-flat-bar {
+  align-items: center;
+  background-color: white;
+  border-radius: 30px 30px 0 0;
+  display: flex;
+  height: 21px;
+  justify-content: center;
   position: relative;
   top: -20px;
-  background-color: white;
   width: 100%;
-  height: 21px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 30px 30px 0 0;
 }
 
 .flat-bar {
-  width: 80px;
-  height: 7px;
-  border-radius: 50px;
   background-color: rgb(48, 47, 47);
-  /* margin: auto; */
-}
-
-.recipe header {
-  position: absolute;
-  z-index: 20;
-}
-
-.share-btn {
-  position: absolute;
-  border-radius: 50%;
-  /* background-color: transparent; */
-  /* border: none; */
-  right: 30px;
-  /* display: grid; */
-  align-self: center;
-  justify-self: center;
-  display: inline;
+  border-radius: 50px;
+  height: 7px;
+  width: 80px;
 }
 
 .fav-btn {
-  position: absolute;
-  border-radius: 50%;
   background-color: white;
   border: none;
-  /* bottom: 1px; */
-  right: 30px;
-  /* display: grid; */
-  align-self: center;
-  justify-self: center;
+  border-radius: 50%;
   display: inline;
+  justify-self: center;
   padding: 15px;
+  position: absolute;
+  right: 30px;
+}
+
+header {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 10000000;
+}
+
+.a {
+  position: relative;
+}
+
+div .share-btn {
+  background-color: transparent;
+  border: none;
+  border-radius: 50%;
+  bottom: 0;
+  padding: 15px;
+  position: absolute;
+  right: 30px;
+  top: 0;
+  width: fit-content;
 }
 
 .share-btn img {
-  width: 32px;
+  width: 30px;
+}
+
+.recipe-content h2 {
+  font-size: 30px;
+  padding: 20px;
+  text-align: center;
+}
+
+.recipe-category {
+  margin-top: -20px;
+  text-align: center;
+}
+
+.recipe h3, .instructions {
+  padding: 0 20px;
+}
+
+iframe {
+  display: block;
+  margin: auto;
 }

@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import copy from 'clipboard-copy';
-import { TbArrowNarrowLeft } from 'react-icons/tb';
 import { useHistory } from 'react-router-dom';
 import Slider from '../components/Slider';
 import { fetchDrinksById, drinksAPI } from '../services/drinksAPI';
@@ -12,6 +11,7 @@ import shareIcon from '../images/shareIcon.svg';
 import whiteHeartIcon from '../images/whiteHeartIcon.svg';
 import blackHeartIcon from '../images/blackHeartIcon.svg';
 import IngredientList from '../components/IngredientList';
+import DifferentHeader from '../components/DifferentHeader';
 
 function RecipeDetails({ type, match }) {
   const { id } = match.params;
@@ -81,7 +81,7 @@ function RecipeDetails({ type, match }) {
 
   const shareClick = () => {
     copy(`http://localhost:3000${history.location.pathname}`);
-    const time = 15000;
+    const time = 10000;
     setCopied(true);
     setTimeout(setCopied, time);
   };
@@ -119,15 +119,13 @@ function RecipeDetails({ type, match }) {
 
   return (
     <main className="recipe">
-      {/* <section className="recipe-item"> */}
+      <DifferentHeader
+        title={ title }
+        favoriteClick={ favoriteClick }
+        shareClick={ shareClick }
+        favorited={ favorited }
+      />
       <div className="div-recipe-img">
-        <header>
-          <TbArrowNarrowLeft
-            color="#FE4900"
-            fontSize="40px"
-            onClick={ () => history.goBack() }
-          />
-        </header>
         <img
           data-testid="recipe-photo"
           src={ thumb }

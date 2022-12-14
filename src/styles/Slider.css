@@ -8,17 +8,17 @@
 }
 
 .inner-item {
-  max-width: 400px;
+  max-width: 200px;
   padding: 14px;
 }
 
 .slider-recipe-img {
-  border-radius: 12px;
-  max-width: 200px;
+  border-radius: 50%;
+  max-width: 180px;
   pointer-events: none;
 }
 
 .slider-recipe-btn {
-  border: none;
   background-color: transparent;
+  border: none;
 }

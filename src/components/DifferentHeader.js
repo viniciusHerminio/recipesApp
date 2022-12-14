@@ -27,7 +27,7 @@ function DifferentHeader({ shareClick, favoriteClick, favorited }) {
   };
 
   return (
-    <header
+    <div
       className={ changeAppearance ? 'different-header' : 'commun-header' }
     >
       <TbArrowNarrowLeft
@@ -42,7 +42,7 @@ function DifferentHeader({ shareClick, favoriteClick, favorited }) {
             onClick={ favoriteClick }
           >
             <img
-              data-testid="favorite-btn"
+              // data-testid="favorite-btn"
               src={ favorited ? blackHeartIcon : whiteHeartIcon }
               alt="Favorite Icon"
             />
@@ -50,7 +50,7 @@ function DifferentHeader({ shareClick, favoriteClick, favorited }) {
           <button
             className="share-btn-header"
             type="button"
-            data-testid="share-btn"
+            // data-testid="share-btn"
             onClick={ shareClick }
           >
             <img
@@ -60,7 +60,7 @@ function DifferentHeader({ shareClick, favoriteClick, favorited }) {
           </button>
         </div>
       )}
-    </header>
+    </div>
   );
 }
 

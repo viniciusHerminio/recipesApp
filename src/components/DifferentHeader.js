@@ -1,31 +1,38 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 import { TbArrowNarrowLeft } from 'react-icons/tb';
 import { PropTypes } from 'prop-types';
 import blackHeartIcon from '../images/blackHeartIcon.svg';
 import whiteHeartIcon from '../images/whiteHeartIcon.svg';
-import shareIcon from '../images/share.svg';
+import shareIcon from '../images/shareIcon.svg';
+import RecipesAppContext from '../context/RecipesAppContext';
 
 function DifferentHeader({ shareClick, favoriteClick, favorited }) {
   const [changeAppearance, setChangeAppearance] = useState(false);
   const history = useHistory();
+  const { setLoading } = useContext(RecipesAppContext);
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      const limite = 470;
+      const limite = 410;
       window
         .addEventListener('scroll', () => setChangeAppearance(window
           .scrollY >= limite));
     }
   }, []);
 
+  const handleClick = () => {
+    history.goBack();
+    setLoading(true);
+  };
+
   return (
     <header
-      className={ changeAppearance ? 'different-header' : '' }
+      className={ changeAppearance ? 'different-header' : 'commun-header' }
     >
       <TbArrowNarrowLeft
         className="arrow-left"
-        onClick={ () => history.goBack() }
+        onClick={ handleClick }
       />
       { changeAppearance && (
         <div className="buttons-area">

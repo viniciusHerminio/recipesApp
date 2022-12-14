@@ -1,19 +1,17 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import copy from 'clipboard-copy';
 import { useHistory } from 'react-router-dom';
-import Slider from '../components/Slider';
 import { fetchDrinksById, drinksAPI } from '../services/drinksAPI';
 import { fetchFoodById, foodsAPI } from '../services/foodsAPI';
 import { getFavs, saveFav, getInProgress } from '../services/localStorage';
 import '../styles/RecipeDetails.css';
-import shareIcon from '../images/shareIcon.svg';
-import whiteHeartIcon from '../images/whiteHeartIcon.svg';
-import blackHeartIcon from '../images/blackHeartIcon.svg';
-import IngredientList from '../components/IngredientList';
 import DifferentHeader from '../components/DifferentHeader';
+import RecipeContent from '../components/RecipeContent';
+import RecipesAppContext from '../context/RecipesAppContext';
 
 function RecipeDetails({ type, match }) {
+  const { setLoading, loading } = useContext(RecipesAppContext);
   const { id } = match.params;
   const [recipe, setRecipe] = useState([]);
   const [video, setvideo] = useState('');
@@ -26,6 +24,7 @@ function RecipeDetails({ type, match }) {
   const history = useHistory();
 
   useEffect(() => {
+    setLoading(true);
     const test = async () => {
       const thisRecipe = await type === 'meals'
         ? await fetchFoodById(id) : await fetchDrinksById(id);
@@ -69,6 +68,8 @@ function RecipeDetails({ type, match }) {
       setMeasure(arrMeasure);
     };
     getIngredients();
+    const timer = 3000;
+    setTimeout(setLoading, timer);
   }, [recipe]);
 
   const title = type === 'meals' ? recipe.strMeal : recipe.strDrink;
@@ -119,91 +120,49 @@ function RecipeDetails({ type, match }) {
 
   return (
     <main className="recipe">
-      <DifferentHeader
-        title={ title }
-        favoriteClick={ favoriteClick }
-        shareClick={ shareClick }
-        favorited={ favorited }
-      />
-      <div className="div-recipe-img">
-        <img
-          data-testid="recipe-photo"
-          src={ thumb }
-          alt={ title }
-        />
-      </div>
-      <div className="recipe-content">
-        <div className="div-flat-bar">
-          <div className="flat-bar" />
-          <button
-            className="fav-btn"
-            type="button"
-            onClick={ favoriteClick }
-          >
-            <img
-              data-testid="favorite-btn"
-              src={ favorited ? blackHeartIcon : whiteHeartIcon }
-              alt="Favorite Icon"
-            />
-          </button>
-        </div>
-        <div className="a">
-          <h2
-            data-testid="recipe-title"
-          >
-            { title }
-          </h2>
-          <button
-            className="share-btn"
-            type="button"
-            data-testid="share-btn"
-            onClick={ shareClick }
-          >
-            <img
-              src={ shareIcon }
-              alt="Share Icon"
-            />
-          </button>
-        </div>
-        <p
-          className="recipe-category"
-          data-testid="recipe-category"
-        >
-          { cat }
-        </p>
-        { copied && <span>Link copied!</span> }
-        <h3> Ingredients </h3>
-        <IngredientList ingredients={ ingredients } measure={ measure } type={ type } />
-        <h3>
-          Instructions
-        </h3>
-        <p data-testid="instructions" className="instructions">
-          { recipe.strInstructions }
-        </p>
-        {
-          type === 'meals' ? <iframe
+      { loading ? <h2> Loading... </h2> : (
+        <>
+          <DifferentHeader
             title={ title }
-            src={ video }
-            data-testid="video"
-            allow="autoplay; encrypted-media"
-            allowFullScreen
-          /> : null
-        }
-        <Slider recipes={ recipes } type={ type } />
-      </div>
-      <footer
-        className="position-fixed fixed-bottom footer-recipe"
-        data-testid="footer"
-      >
-        <button
-          className="start-recipe-btn"
-          data-testid="start-recipe-btn"
-          type="button"
-          onClick={ startRecipeClick }
-        >
-          {`${statusProgress} Recipe`}
-        </button>
-      </footer>
+            favoriteClick={ favoriteClick }
+            shareClick={ shareClick }
+            favorited={ favorited }
+          />
+          <div className="div-recipe-img">
+            <img
+              data-testid="recipe-photo"
+              src={ thumb }
+              alt={ title }
+            />
+          </div>
+          <RecipeContent
+            favoriteClick={ favoriteClick }
+            favorited={ favorited }
+            shareClick={ shareClick }
+            copied={ copied }
+            ingredients={ ingredients }
+            measure={ measure }
+            type={ type }
+            title={ title }
+            video={ video }
+            instructions={ recipe.strInstructions }
+            recipes={ recipes }
+            cat={ cat }
+          />
+          <footer
+            className="position-fixed fixed-bottom footer-recipe"
+            data-testid="footer"
+          >
+            <button
+              className="start-recipe-btn"
+              data-testid="start-recipe-btn"
+              type="button"
+              onClick={ startRecipeClick }
+            >
+              {`${statusProgress} Recipe`}
+            </button>
+          </footer>
+        </>)}
     </main>
   );
 }

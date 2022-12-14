@@ -1,23 +1,30 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import PropTypes from 'prop-types';
 import '../styles/Slider.css';
 import { useHistory } from 'react-router-dom';
+import RecipesAppContext from '../context/RecipesAppContext';
 
 function Slider({ recipes, type }) {
   const [width, setWidth] = useState(0);
   const carousel = useRef();
   const history = useHistory();
-
-  useEffect(() => {
-    setWidth(carousel.current.scrollWidth - carousel.current.offsetWidth);
-  });
+  const { setLoading } = useContext(RecipesAppContext);
 
   const six = 6;
   const thumb = type === 'meals' ? 'strDrinkThumb' : 'strMealThumb';
   const title = type === 'meals' ? 'strDrink' : 'strMeal';
   const id = type === 'meals' ? 'idDrink' : 'idMeal';
   const path = type === 'meals' ? 'drinks' : 'meals';
+
+  useEffect(() => {
+    setWidth(carousel.current.scrollWidth - carousel.current.offsetWidth);
+  });
+
+  const handleClick = (recipe) => {
+    history.push(`/${path}/${recipe[id]}`);
+    setLoading(true);
+  };
 
   return (
     <>
@@ -40,7 +47,7 @@ function Slider({ recipes, type }) {
               <button
                 type="button"
                 className="slider-recipe-btn"
-                onClick={ () => history.push(`/${path}/${recipe[id]}`) }
+                onClick={ () => handleClick(recipe) }
               >
                 <img
                   src={ recipe[thumb] }

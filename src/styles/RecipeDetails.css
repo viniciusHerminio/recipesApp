@@ -1,6 +1,12 @@
+.commun-header {
+  top: 7px;
+}
+
 .arrow-left {
+  background-color: white;
+  border-radius: 50%;
   color: #fe4900;
-  font-size: 40px;
+  font-size: 50px;
   z-index: 1000000;
 }
 
@@ -68,6 +74,18 @@
   right: 30px;
 }
 
+
+.share-btn {
+  background-color: white;
+  border: none;
+  border-radius: 50%;
+  display: inline;
+  justify-self: center;
+  left: 30px;
+  padding: 15px;
+  position: absolute;
+}
+
 header {
   position: fixed;
   top: 0;
@@ -77,18 +95,6 @@ header {
 
 .a {
   position: relative;
-}
-
-div .share-btn {
-  background-color: transparent;
-  border: none;
-  border-radius: 50%;
-  bottom: 0;
-  padding: 15px;
-  position: absolute;
-  right: 30px;
-  top: 0;
-  width: fit-content;
 }
 
 .share-btn img {
@@ -148,7 +154,7 @@ iframe {
   display: flex;
   height: 100%;
   justify-content: space-around;
-  width: 30%;
+  width: 40%;
 }
 
 .share-btn-header, .fav-btn-header {
@@ -156,5 +162,5 @@ iframe {
   border: none;
   border-radius: 50%;
   box-shadow: #3c40434d 0 1px 2px 0 , #3c404326 0 2px 6px 2px;
-  padding: 10px;
+  padding: 15px;
 }

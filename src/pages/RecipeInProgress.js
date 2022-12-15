@@ -11,6 +11,7 @@ import RecipesAppContext from '../context/RecipesAppContext';
 import RecipeContent from '../components/RecipeContent';
 import { getFavs, saveFav } from '../services/localStorage';
 import '../styles/RecipeDefinitions.css';
+import Loading from '../components/Loading';
 
 function RecipeInProgress({ type }) {
   const history = useHistory();
@@ -155,7 +156,7 @@ function RecipeInProgress({ type }) {
 
   return (
     <main className="recipe-in-progress">
-      {loading || title === undefined ? <h2>LOADING...</h2> : (
+      {loading || title === undefined ? <Loading /> : (
         <>
           <div className="div-recipe-img">
             <TbArrowNarrowLeft

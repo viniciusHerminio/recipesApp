@@ -10,6 +10,7 @@ import '../styles/RecipeDefinitions.css';
 // import DifferentHeader from '../components/DifferentHeader';
 import RecipeContent from '../components/RecipeContent';
 import RecipesAppContext from '../context/RecipesAppContext';
+import Loading from '../components/Loading';
 
 function RecipeDetails({ type, match }) {
   const { setLoading, loading } = useContext(RecipesAppContext);
@@ -127,7 +128,7 @@ function RecipeDetails({ type, match }) {
 
   return (
     <main className="recipe">
-      { loading ? <h2> Loading... </h2> : (
+      { loading ? <Loading /> : (
         <>
           <TbArrowNarrowLeft
             className="arrow-left"

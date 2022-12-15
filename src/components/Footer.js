@@ -16,7 +16,7 @@ function Footer() {
 
   return (
     <div
-      className="bg-dark text-white d-flex justify-content-evenly p-3"
+      className="bg-dark text-white d-flex justify-content-evenly p-3 footer-recipe"
     >
       <button
         type="button"

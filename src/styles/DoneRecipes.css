@@ -21,10 +21,10 @@
 }
 
 .btns-done-recipe {
+  background-color: white;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
   display: flex;
   flex-wrap: wrap;
-  box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
-  background-color: white;
   position: fixed;
   z-index: 9999;
 }
@@ -34,18 +34,17 @@
 }
 
 .btns-done-recipe .header {
-  display: flex;
-  width: 95%;
-  /* margin: auto; */
   align-items: center;
+  display: flex;
   justify-content: space-between;
+  width: 95%;
 }
 
 .btns-done-recipe div:nth-of-type(2) {
   display: flex;
-  width: 100vw;
   justify-content: center;
   gap: 30px;
+  width: 100vw;
 }
 
 .all-dones {
@@ -55,22 +54,15 @@
 }
 
 .done-card {
-  width: 98%;
-  margin: auto;
-  /* border: 2px red solid; */
-  height: 170px;
-  margin-bottom: 20px;
-  display: flex;
   box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
   border-radius: 10px;
+  display: flex;
+  height: 170px;
+  margin: auto;
+  margin-bottom: 20px;
   position: relative;
+  width: 98%;
 }
-
-/* .done-card div {
-  width: 50%;
-  display: inline-block;
-  border: 2px red solid;
-} */
 
 .done-img {
   border-radius: 10px 0 0 10px ;
@@ -79,8 +71,8 @@
 
 .done-card a {
   color: inherit;
-  text-decoration: inherit;
   display: flex;
+  text-decoration: inherit;
 }
 
 .done-informations{
@@ -90,16 +82,15 @@
 .done-informations div {
   display: flex;
   justify-content: space-around;
-  /* background-color: red; */
 }
 
 .done-informations div p {
-  margin: 0;
   background-color: #d9d9d9;
   border-radius: 25px;
-  padding: 4px;
-  font-size: 12px;
   color: #797d86;
+  font-size: 12px;
+  margin: 0;
+  padding: 4px;
 }
 
 .done-title {

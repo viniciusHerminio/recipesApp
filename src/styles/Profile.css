@@ -1,0 +1,44 @@
+.profile-area{
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.profile-email {
+  text-align: center;
+  margin-top: 10px;
+  font-size: 18px;
+}
+
+.profile-area .header{
+  align-items: center;
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+  background-color: #fe4800c5;
+  padding: 15px;
+  border-radius: 0 0 10rem 10rem;
+}
+
+.profile-options {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  height: 60%;
+  justify-content: space-evenly;
+}
+
+.profile-options button{
+  align-items: center;
+  background-color: transparent;
+  border: none;
+  border-bottom: 1px #fe4800c5 solid;
+  color: #797D86;
+  display: flex;
+  font-size: 20px;
+  gap: 20px;
+  justify-content: center;
+  margin: auto;
+  padding: 20px;
+  width: 90%;
+}

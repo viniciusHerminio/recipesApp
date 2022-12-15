@@ -1,5 +1,5 @@
 import { useState, useContext } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import '../styles/Header.css';
 // import iconProfile from '../images/profileIcon.svg';
 // import iconSearch from '../images/searchIcon.svg';

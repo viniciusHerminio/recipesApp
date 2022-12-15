@@ -1,0 +1,48 @@
+@import './colors.css' ;
+
+.category-cards {
+  display: flex;
+}
+
+.category-cards button {
+  background-color: rgba(240, 248, 255, 0);
+  border-color: rgba(240, 248, 255, 0.1);
+  height: 80px;
+}
+
+.cards {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  margin: 30px auto 50px;
+  width: 90%;
+}
+
+.recipe-card {
+  aspect-ratio: 1;
+  border: 1px solid whitesmoke;
+  border-radius: 8px;
+  display: inline-flex;
+  height: 200px;
+  margin-bottom: 25px;
+  position: relative;
+  width: 42%;
+}
+
+.recipe-card img {
+  border-radius: 8px;
+  height: 100%;
+  width: 100%;
+}
+
+.recipe-card span {
+  background-color: whitesmoke;
+  bottom: 0%;
+  color: var(--orange);
+  font-style: italic;
+  letter-spacing: 0.05em;
+  opacity: 0.85;
+  position: absolute;
+  text-transform: uppercase;
+  width: 100%;
+}

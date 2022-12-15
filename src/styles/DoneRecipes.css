@@ -1,0 +1,156 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.filter-by-meal-btn, .filter-by-drink-btn, .filter-by-all-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+  border: none;
+  font-size: 10px;
+  color: #fe4900;
+}
+
+.done-recipes {
+  min-height: 100vh;
+  background-color: #F7F7F7;
+}
+
+.btns-done-recipe {
+  display: flex;
+  flex-wrap: wrap;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+  background-color: white;
+  position: fixed;
+  z-index: 9999;
+}
+
+.btns-done-recipe p {
+  margin: 0;
+}
+
+.btns-done-recipe .header {
+  display: flex;
+  width: 95%;
+  /* margin: auto; */
+  align-items: center;
+  justify-content: space-between;
+}
+
+.btns-done-recipe div:nth-of-type(2) {
+  display: flex;
+  width: 100vw;
+  justify-content: center;
+  gap: 30px;
+}
+
+.all-dones {
+  display: flex;
+  flex-direction: column;
+  padding-top: 130px;
+}
+
+.done-card {
+  width: 98%;
+  margin: auto;
+  /* border: 2px red solid; */
+  height: 170px;
+  margin-bottom: 20px;
+  display: flex;
+  box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
+  border-radius: 10px;
+  position: relative;
+}
+
+/* .done-card div {
+  width: 50%;
+  display: inline-block;
+  border: 2px red solid;
+} */
+
+.done-img {
+  border-radius: 10px 0 0 10px ;
+  width: 50%;
+}
+
+.done-card a {
+  color: inherit;
+  text-decoration: inherit;
+  display: flex;
+}
+
+.done-informations{
+  width: 50%;
+}
+
+.done-informations div {
+  display: flex;
+  justify-content: space-around;
+  /* background-color: red; */
+}
+
+.done-informations div p {
+  margin: 0;
+  background-color: #d9d9d9;
+  border-radius: 25px;
+  padding: 4px;
+  font-size: 12px;
+  color: #797d86;
+}
+
+.done-title {
+  font-size: 20px;
+}
+
+.done-informations {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.done-date {
+  font-size: 12px;
+  margin: auto;
+}
+
+.done-info-food {
+  color: #797D86;
+  font-size: 14px;
+  margin-top: -10px;
+  margin-bottom: 20px;
+  margin-left: 7px;
+}
+
+.done-name {
+  text-align: center;
+  font-size: 18px;
+  /* font-weight: 800; */
+}
+
+.copied-warning {
+  position: fixed;
+  top: 75%;
+  left: 40%;
+  background-color: #fe4800d8;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+.done-share-btn {
+  position: absolute;
+  top: -15px;
+  padding: 6px;
+  border-radius: 50%;
+  background-color: inherit;
+  border: none;
+  right: -2px;
+  z-index: 998;
+}
+
+.filter-by-meal-btn:focus, .filter-by-drink-btn:focus, .filter-by-all-btn:focus {
+  border-bottom: 2px #fe4900 solid;
+}

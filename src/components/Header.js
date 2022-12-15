@@ -1,14 +1,26 @@
 import { useState, useContext } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
+import { TbArrowNarrowLeft } from 'react-icons/tb';
 import iconProfile from '../images/profileIcon.svg';
 import iconSearch from '../images/searchIcon.svg';
 import RecipesAppContext from '../context/RecipesAppContext';
 
-function Header({ search, profileUser, children }) {
+function Header({ search, profileUser, children, goBack }) {
   const [searching, setSearching] = useState(false);
-  const { setSearchInput } = useContext(RecipesAppContext);
+  const { setSearchInput, setLoading } = useContext(RecipesAppContext);
+  const history = useHistory();
+
+  const handleClick = () => {
+    history.goBack();
+    setLoading(true);
+  };
   return (
-    <div>
+    <div className="header">
+      {goBack && <TbArrowNarrowLeft
+        className="arrow-left"
+        onClick={ handleClick }
+      />}
+      <h2 data-testid="page-title">{children}</h2>
       {profileUser && (
         <Link to="/profile">
           <img alt="iconProfile" src={ iconProfile } data-testid="profile-top-btn" />
@@ -24,7 +36,6 @@ function Header({ search, profileUser, children }) {
         data-testid="search-input"
         onChange={ ({ target: { value } }) => setSearchInput(value) }
       />}
-      <p data-testid="page-title">{children}</p>
     </div>
   );
 }

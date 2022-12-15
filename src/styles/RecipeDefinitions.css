@@ -90,7 +90,7 @@ li {
   position: absolute;
 }
 
-header {
+.header-dif {
   position: fixed;
   top: 0;
   width: 100%;
@@ -189,8 +189,8 @@ iframe {
   width: 100%;
   height: 50px;
   border-radius: 15px;
-  border: 2px #FE4900 solid;
-  color:#FE4900;
+  border: 2px #fe4900 solid;
+  color:#fe4900;
   background-color: white;
   font-weight: 900;
 }

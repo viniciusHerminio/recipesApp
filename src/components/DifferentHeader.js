@@ -28,7 +28,9 @@ function DifferentHeader({ shareClick, favoriteClick, favorited }) {
 
   return (
     <div
-      className={ changeAppearance ? 'different-header' : 'commun-header' }
+      className={
+        `header-dif ${changeAppearance ? 'different-header' : 'commun-header'}`
+      }
     >
       <TbArrowNarrowLeft
         className="arrow-left"

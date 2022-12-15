@@ -7,6 +7,7 @@ function RecipesAppProvider({ children }) {
   const [radioInput, setRadioinput] = useState('');
   const [inProgress, setInProgress] = useState([]);
   const [isDisabled, setDisabled] = useState(true);
+  const [loading, setLoading] = useState(true);
   const [foods, setFoods] = useState([]);
   const [drinks, setDrinks] = useState([]);
 
@@ -23,10 +24,12 @@ function RecipesAppProvider({ children }) {
     setFoods,
     drinks,
     setDrinks,
+    loading,
+    setLoading,
   }), [searchInput,
     setSearchInput,
     radioInput,
-    setRadioinput, inProgress, isDisabled, foods, drinks]);
+    setRadioinput, inProgress, isDisabled, foods, drinks, loading]);
 
   return (
     <RecipesAppContext.Provider value={ value }>

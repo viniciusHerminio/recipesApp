@@ -1,16 +1,19 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import copy from 'clipboard-copy';
-import Slider from '../components/Slider';
+import { useHistory } from 'react-router-dom';
+import { TbArrowNarrowLeft } from 'react-icons/tb';
 import { fetchDrinksById, drinksAPI } from '../services/drinksAPI';
 import { fetchFoodById, foodsAPI } from '../services/foodsAPI';
 import { getFavs, saveFav, getInProgress } from '../services/localStorage';
-import '../styles/RecipeDetails.css';
-import shareIcon from '../images/shareIcon.svg';
-import whiteHeartIcon from '../images/whiteHeartIcon.svg';
-import blackHeartIcon from '../images/blackHeartIcon.svg';
+import '../styles/RecipeDefinitions.css';
+// import DifferentHeader from '../components/DifferentHeader';
+import RecipeContent from '../components/RecipeContent';
+import RecipesAppContext from '../context/RecipesAppContext';
+import Loading from '../components/Loading';
 
-function RecipeDetails({ type, match, history }) {
+function RecipeDetails({ type, match }) {
+  const { setLoading, loading } = useContext(RecipesAppContext);
   const { id } = match.params;
   const [recipe, setRecipe] = useState([]);
   const [video, setvideo] = useState('');
@@ -20,8 +23,10 @@ function RecipeDetails({ type, match, history }) {
   const [copied, setCopied] = useState(false);
   const [favorited, setFavorited] = useState(false);
   const [statusProgress, setStatusProgress] = useState('Start');
+  const history = useHistory();
 
   useEffect(() => {
+    setLoading(true);
     const test = async () => {
       const thisRecipe = await type === 'meals'
         ? await fetchFoodById(id) : await fetchDrinksById(id);
@@ -48,7 +53,6 @@ function RecipeDetails({ type, match, history }) {
       const recipesInProgress = JSON.parse(getInProgress());
       const recipeKeys = Object.keys(JSON.parse(getInProgress()));
       const inProgressRecipesKeys = Object.keys(recipesInProgress[recipeKeys[0]]);
-      console.log(inProgressRecipesKeys);
       if (inProgressRecipesKeys.includes(id)) {
         setStatusProgress('Continue');
       }
@@ -66,19 +70,29 @@ function RecipeDetails({ type, match, history }) {
       setMeasure(arrMeasure);
     };
     getIngredients();
+    const timer = 3000;
+    setTimeout(setLoading, timer);
   }, [recipe]);
 
   const title = type === 'meals' ? recipe.strMeal : recipe.strDrink;
   const thumb = type === 'meals' ? recipe.strMealThumb : recipe.strDrinkThumb;
   const cat = type === 'meals' ? recipe.strCategory : recipe.strAlcoholic;
 
+  const handleClick = () => {
+    history.goBack();
+    setLoading(true);
+  };
+
   const startRecipeClick = () => {
     history.push(`${history.location.pathname}/in-progress`);
   };
 
   const shareClick = () => {
-    copy(`http://localhost:3000${history.location.pathname}`);
+    const url = window.location.href;
+    copy(url);
+    const time = 10000;
     setCopied(true);
+    setTimeout(setCopied, time);
   };
 
   const favoriteClick = () => {
@@ -114,99 +128,53 @@ function RecipeDetails({ type, match, history }) {
 
   return (
     <main className="recipe">
-      <section className="recipe-item">
-        <h2
-          data-testid="recipe-title"
-        >
-          { title }
-        </h2>
-        <img
-          data-testid="recipe-photo"
-          src={ thumb }
-          alt={ title }
-        />
-        <p
-          data-testid="recipe-category"
-        >
-          {`Category: ${cat}`}
-        </p>
-        <div>
-          <button
-            className="share-btn"
-            type="button"
-            data-testid="share-btn"
-            onClick={ shareClick }
-          >
-            <img
-              src={ shareIcon }
-              alt="Share Icon"
-            />
-          </button>
-          { copied && <span>Link copied!</span> }
-          <button
-            className="share-btn"
-            type="button"
-            onClick={ favoriteClick }
-          >
-            <img
-              data-testid="favorite-btn"
-              src={ favorited ? blackHeartIcon : whiteHeartIcon }
-              alt="Favorite Icon"
-            />
-          </button>
-        </div>
-        <ul>
-          Ingredients
-          {ingredients.map((ing, index) => {
-            if (type === 'meals') {
-              return ing !== '' ? (
-                <li
-                  key={ `${index}-ingredient-name-and-measure` }
-                  data-testid={ `${index}-ingredient-name-and-measure` }
-                >
-                  { `${ing} ${measure[index]}` }
-                </li>) : null;
-            }
-            return ing !== null ? (
-              <li
-                key={ `${index}-ingredient-name-and-measure` }
-                data-testid={ `${index}-ingredient-name-and-measure` }
-              >
-                { `${ing} ${measure[index]}` }
-              </li>) : null;
-          })}
-        </ul>
-        <h3>
-          Instructions
-        </h3>
-        <p data-testid="instructions">
-          { recipe.strInstructions }
-        </p>
-        {
-          type === 'meals' ? <iframe
+      { loading ? <Loading /> : (
+        <>
+          <TbArrowNarrowLeft
+            className="arrow-left"
+            onClick={ handleClick }
+          />
+          {/* <DifferentHeader
             title={ title }
-            src={ video }
-            data-testid="video"
-            frameBorder="0"
-            allow="autoplay; encrypted-media"
-            allowFullScreen
-          /> : null
-        }
-        <Slider recipes={ recipes } type={ type } />
-      </section>
-      <footer
-        className="position-fixed fixed-bottom"
-        data-testid="footer"
-      >
-        <button
-          className="start-recipe-btn"
-          data-testid="start-recipe-btn"
-          type="button"
-          onClick={ startRecipeClick }
-        >
-          {`${statusProgress} Recipe`}
-        </button>
-      </footer>
+            favoriteClick={ favoriteClick }
+            shareClick={ shareClick }
+            favorited={ favorited }
+          /> */}
+          <div className="div-recipe-img">
+            <img
+              data-testid="recipe-photo"
+              src={ thumb }
+              alt={ title }
+            />
+          </div>
+          <RecipeContent
+            favoriteClick={ favoriteClick }
+            favorited={ favorited }
+            shareClick={ shareClick }
+            copied={ copied }
+            ingredients={ ingredients }
+            measure={ measure }
+            type={ type }
+            title={ title }
+            video={ video }
+            instructions={ recipe.strInstructions }
+            recipes={ recipes }
+            cat={ cat }
+          />
+          <footer
+            className="position-fixed fixed-bottom footer-recipe"
+            data-testid="footer"
+          >
+            <button
+              className="start-recipe-btn"
+              data-testid="start-recipe-btn"
+              type="button"
+              onClick={ startRecipeClick }
+            >
+              {`${statusProgress} Recipe`}
+            </button>
+          </footer>
+        </>)}
     </main>
   );
 }
@@ -218,12 +186,6 @@ RecipeDetails.propTypes = {
     }),
   }).isRequired,
   type: PropTypes.string.isRequired,
-  history: PropTypes.shape({
-    push: PropTypes.func,
-    location: PropTypes.shape({
-      pathname: PropTypes.string,
-    }),
-  }).isRequired,
 };
 
 export default RecipeDetails;

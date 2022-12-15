@@ -6,6 +6,17 @@ import {
 } from '../services/drinksAPI';
 import Header from './Header';
 import SearchBar from './SearchBar';
+import '../styles/Recipes.css';
+import allCat from '../images/All.png';
+import Beef from '../images/beef.png';
+import Breakfast from '../images/breakfast.png';
+import Chicken from '../images/chicken.png';
+import Dessert from '../images/dessert.png';
+import Goat from '../images/goat.png';
+
+const arrImages = [
+  Beef, Breakfast, Chicken, Dessert, Goat,
+];
 
 function Recipes() {
   const { drinks, setDrinks } = useContext(RecipesAppContext);
@@ -68,40 +79,49 @@ function Recipes() {
     <div>
       <Header profileUser search>Drinks</Header>
       <SearchBar />
-      { typeof drinksCategory === typeof [] && drinksCategory.map((item, index) => (
-        <button
-          type="button"
-          key={ index }
-          data-testid={ `${item.strCategory}-category-filter` }
-          onClick={ () => handleFilterCat(item.strCategory) }
-        >
-          {item.strCategory}
-        </button>
-      )) }
-      <button
-        type="button"
-        data-testid="All-category-filter"
-        onClick={ () => withoutFilter() }
-      >
-        All
-      </button>
 
-      { typeof drinks === typeof [] && drinks.map((item, index) => (
+      <div className="category-cards">
         <button
-          data-testid={ `${index}-recipe-card` }
-          key={ index }
-          onClick={ () => handleClick(item.idDrink) }
+          className="category-btn"
           type="button"
+          data-testid="All-category-filter"
+          onClick={ () => withoutFilter() }
         >
-          <img
-            src={ item.strDrinkThumb }
-            alt="imagem da receita"
-            width="50"
-            data-testid={ `${index}-card-img` }
-          />
-          <span data-testid={ `${index}-card-name` }>{item.strDrink}</span>
+          <img src={ allCat } alt="all categories" />
         </button>
-      )) }
+        { typeof drinksCategory === typeof [] && drinksCategory.map((item, index) => (
+          <button
+            className="category-btn"
+            type="button"
+            key={ index }
+            data-testid={ `${item.strCategory}-category-filter` }
+            onClick={ () => handleFilterCat(item.strCategory) }
+          >
+            {/* {item.strCategory} */}
+            <img src={ arrImages[index] } alt="category" />
+          </button>
+        )) }
+      </div>
+
+      <div className="cards">
+        { typeof drinks === typeof [] && drinks.map((item, index) => (
+          <button
+            className="recipe-card"
+            data-testid={ `${index}-recipe-card` }
+            key={ index }
+            onClick={ () => handleClick(item.idDrink) }
+            type="button"
+          >
+            <img
+              src={ item.strDrinkThumb }
+              alt="imagem da receita"
+              width="50"
+              data-testid={ `${index}-card-img` }
+            />
+            <span data-testid={ `${index}-card-name` }>{item.strDrink}</span>
+          </button>
+        )) }
+      </div>
     </div>
   );
 }

@@ -6,6 +6,17 @@ import {
 } from '../services/foodsAPI';
 import Header from './Header';
 import SearchBar from './SearchBar';
+import '../styles/Recipes.css';
+import allCat from '../images/All.png';
+import Beef from '../images/beef.png';
+import Breakfast from '../images/breakfast.png';
+import Chicken from '../images/chicken.png';
+import Dessert from '../images/dessert.png';
+import Goat from '../images/goat.png';
+
+const arrImages = [
+  Beef, Breakfast, Chicken, Dessert, Goat,
+];
 
 function Recipes() {
   const { foods, setFoods } = useContext(RecipesAppContext);
@@ -70,41 +81,48 @@ function Recipes() {
     <div>
       <Header profileUser search>Meals</Header>
       <SearchBar />
-      Foods
-      { typeof foodsCategory === typeof [] && foodsCategory.map((item, index) => (
+      <div className="category-cards">
         <button
+          className="category-btn"
           type="button"
-          key={ index }
-          data-testid={ `${item.strCategory}-category-filter` }
-          onClick={ () => handleFilterCat(item.strCategory) }
+          data-testid="All-category-filter"
+          onClick={ () => withoutFilter() }
         >
-          {item.strCategory}
+          <img src={ allCat } alt="all categories" />
         </button>
-      )) }
-      <button
-        type="button"
-        data-testid="All-category-filter"
-        onClick={ () => withoutFilter() }
-      >
-        All
-      </button>
+        { typeof foodsCategory === typeof [] && foodsCategory.map((item, index) => (
+          <button
+            className="category-btn"
+            type="button"
+            key={ index }
+            data-testid={ `${item.strCategory}-category-filter` }
+            onClick={ () => handleFilterCat(item.strCategory) }
+          >
+            {/* {item.strCategory} */}
+            <img src={ arrImages[index] } alt="category" />
+          </button>
+        )) }
+      </div>
 
-      { typeof foods === typeof [] && foods.map((item, index) => (
-        <button
-          data-testid={ `${index}-recipe-card` }
-          type="button"
-          onClick={ () => handleClick(item.idMeal) }
-          key={ index }
-        >
-          <img
-            src={ item.strMealThumb }
-            alt="imagem da receita"
-            width="50"
-            data-testid={ `${index}-card-img` }
-          />
-          <span data-testid={ `${index}-card-name` }>{item.strMeal}</span>
-        </button>
-      )) }
+      <div className="cards">
+        { typeof foods === typeof [] && foods.map((item, index) => (
+          <button
+            className="recipe-card"
+            data-testid={ `${index}-recipe-card` }
+            type="button"
+            onClick={ () => handleClick(item.idMeal) }
+            key={ index }
+          >
+            <img
+              src={ item.strMealThumb }
+              alt="imagem da receita"
+              width="50"
+              data-testid={ `${index}-card-img` }
+            />
+            <span data-testid={ `${index}-card-name` }>{item.strMeal}</span>
+          </button>
+        )) }
+      </div>
     </div>
   );
 }

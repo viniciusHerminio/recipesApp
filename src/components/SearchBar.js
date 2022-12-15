@@ -4,6 +4,7 @@ import RecipesAppContext from '../context/RecipesAppContext';
 import { radioIngredientsApi, radioNamesApi,
   radioFirstLetterApi, radioDrinksIngredientsApi,
   radioDrinksNamesApi, radioDrinksFirstLetterApi } from '../services/radioInputApi';
+import '../styles/SearchBar.css';
 
 function SearchBar() {
   const { searchInput,
@@ -66,9 +67,9 @@ function SearchBar() {
   };
 
   return (
-    <div>
+    <div className="filter-opt">
       <label htmlFor="ingredient">
-        Ingredientes
+        <span>Ingredientes</span>
         <input
           type="radio"
           data-testid="ingredient-search-radio"
@@ -79,7 +80,7 @@ function SearchBar() {
         />
       </label>
       <label htmlFor="name">
-        Nome
+        <span>Nome</span>
         <input
           type="radio"
           data-testid="name-search-radio"
@@ -90,7 +91,7 @@ function SearchBar() {
         />
       </label>
       <label htmlFor="first-letter">
-        Primeira letra
+        <span>Primeira letra</span>
         <input
           type="radio"
           data-testid="first-letter-search-radio"

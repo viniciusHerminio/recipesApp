@@ -1,0 +1,23 @@
+@import './colors.css' ;
+
+.footer {
+  background: linear-gradient(-145deg, #ec663d, #c43256, #ec663d, var(--orange));
+  border-radius: 5px 5px 0 0;
+  bottom: 0%;
+  display: flex;
+  gap: 10px;
+  padding: 12px;
+  position: static;
+}
+
+.footer button {
+  background-color: rgba(245, 245, 245, 0.1);
+  border-color: rgba(245, 245, 245, 0.1);
+  height: 40px;
+  width: 100px;
+}
+
+.fa-utensils, .fa-martini-glass-citrus {
+  color: rgb(209, 209, 209);
+  font-size: 24px;
+}

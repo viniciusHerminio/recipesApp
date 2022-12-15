@@ -1,0 +1,20 @@
+@import './colors.css' ;
+
+.filter-opt {
+  align-items: center;
+  display: flex;
+  gap: 22px;
+  margin-bottom: 10px;
+  margin-left: 12px;
+}
+
+.filter-opt label {
+  display: flex;
+  gap: 5px;
+}
+
+.filter-opt button {
+  background-color: #ec663d;
+  color: whitesmoke;
+  width: 20%;
+}

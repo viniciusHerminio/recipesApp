@@ -53,7 +53,7 @@ function RecipeContent({
       >
         { cat }
       </p>
-      { copied && <span className="copied">Link copied!</span> }
+      { copied && <span className="copied-warning">Link copied!</span> }
       <h3> Ingredients </h3>
       { recipes.length === 0 ? (
         <ListCheckBox

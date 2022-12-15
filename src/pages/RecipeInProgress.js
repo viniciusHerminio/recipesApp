@@ -1,11 +1,13 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import { TbArrowNarrowLeft } from 'react-icons/tb';
+import copy from 'clipboard-copy';
 import { fetchDrinksById } from '../services/drinksAPI';
 import { fetchFoodById } from '../services/foodsAPI';
 import '../styles/RecipeInProgress.css';
 import RecipesAppContext from '../context/RecipesAppContext';
-import DifferentHeader from '../components/DifferentHeader';
+// import DifferentHeader from '../components/DifferentHeader';
 import RecipeContent from '../components/RecipeContent';
 import { getFavs, saveFav } from '../services/localStorage';
 import '../styles/RecipeDefinitions.css';
@@ -74,6 +76,11 @@ function RecipeInProgress({ type }) {
     recipesInProg();
   }, [thisRecipe]);
 
+  const handleClick = () => {
+    history.goBack();
+    setLoading(true);
+  };
+
   const favoriteClick = () => {
     const favorite = {
       id,
@@ -106,7 +113,8 @@ function RecipeInProgress({ type }) {
   };
 
   const shareClick = () => {
-    copy(`http://localhost:3000${history.location.pathname}`);
+    const url = window.location.href;
+    copy(url.replace('/in-progress', ''));
     const time = 10000;
     setCopied(true);
     setTimeout(setCopied, time);
@@ -150,18 +158,22 @@ function RecipeInProgress({ type }) {
       {loading || title === undefined ? <h2>LOADING...</h2> : (
         <>
           <div className="div-recipe-img">
+            <TbArrowNarrowLeft
+              className="arrow-left"
+              onClick={ handleClick }
+            />
             <img
               src={ thumb }
               alt={ title }
               data-testid="recipe-photo"
             />
           </div>
-          <DifferentHeader
+          {/* <DifferentHeader
             title={ title }
             favoriteClick={ favoriteClick }
             shareClick={ shareClick }
             favorited={ favorited }
-          />
+          /> */}
           <RecipeContent
             favoriteClick={ favoriteClick }
             favorited={ favorited }

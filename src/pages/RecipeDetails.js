@@ -2,11 +2,12 @@ import { useContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import copy from 'clipboard-copy';
 import { useHistory } from 'react-router-dom';
+import { TbArrowNarrowLeft } from 'react-icons/tb';
 import { fetchDrinksById, drinksAPI } from '../services/drinksAPI';
 import { fetchFoodById, foodsAPI } from '../services/foodsAPI';
 import { getFavs, saveFav, getInProgress } from '../services/localStorage';
 import '../styles/RecipeDefinitions.css';
-import DifferentHeader from '../components/DifferentHeader';
+// import DifferentHeader from '../components/DifferentHeader';
 import RecipeContent from '../components/RecipeContent';
 import RecipesAppContext from '../context/RecipesAppContext';
 
@@ -76,12 +77,18 @@ function RecipeDetails({ type, match }) {
   const thumb = type === 'meals' ? recipe.strMealThumb : recipe.strDrinkThumb;
   const cat = type === 'meals' ? recipe.strCategory : recipe.strAlcoholic;
 
+  const handleClick = () => {
+    history.goBack();
+    setLoading(true);
+  };
+
   const startRecipeClick = () => {
     history.push(`${history.location.pathname}/in-progress`);
   };
 
   const shareClick = () => {
-    copy(`http://localhost:3000${history.location.pathname}`);
+    const url = window.location.href;
+    copy(url);
     const time = 10000;
     setCopied(true);
     setTimeout(setCopied, time);
@@ -122,12 +129,16 @@ function RecipeDetails({ type, match }) {
     <main className="recipe">
       { loading ? <h2> Loading... </h2> : (
         <>
-          <DifferentHeader
+          <TbArrowNarrowLeft
+            className="arrow-left"
+            onClick={ handleClick }
+          />
+          {/* <DifferentHeader
             title={ title }
             favoriteClick={ favoriteClick }
             shareClick={ shareClick }
             favorited={ favorited }
-          />
+          /> */}
           <div className="div-recipe-img">
             <img
               data-testid="recipe-photo"

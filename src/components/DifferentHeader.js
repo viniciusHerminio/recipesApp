@@ -44,7 +44,6 @@ function DifferentHeader({ shareClick, favoriteClick, favorited }) {
             onClick={ favoriteClick }
           >
             <img
-              // data-testid="favorite-btn"
               src={ favorited ? blackHeartIcon : whiteHeartIcon }
               alt="Favorite Icon"
             />
@@ -52,7 +51,6 @@ function DifferentHeader({ shareClick, favoriteClick, favorited }) {
           <button
             className="share-btn-header"
             type="button"
-            // data-testid="share-btn"
             onClick={ shareClick }
           >
             <img

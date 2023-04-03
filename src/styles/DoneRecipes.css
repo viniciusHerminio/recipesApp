@@ -4,7 +4,9 @@
   padding: 0;
 }
 
-.filter-by-meal-btn, .filter-by-drink-btn, .filter-by-all-btn {
+.filter-by-meal-btn,
+.filter-by-drink-btn,
+.filter-by-all-btn {
   align-items: center;
   background-color: white;
   border: none;
@@ -22,10 +24,9 @@
 
 .btns-done-recipe {
   background-color: white;
-  box-shadow: #00000029 0 3px 6px , #0000003b 0 3px 6px;
-  display: flex;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2), 0 3px 6px rgba(0, 0, 0, 0.3);
   flex-wrap: wrap;
-  position: fixed;
+  width: 100%;
   z-index: 9999;
 }
 
@@ -37,6 +38,7 @@
   align-items: center;
   display: flex;
   justify-content: space-between;
+  padding: 10px;
   width: 95%;
 }
 
@@ -49,11 +51,11 @@
   justify-content: space-around;
 }
 
-.btns-done-recipe div:nth-of-type( 2 ) {
+.btns-done-recipe div:nth-of-type(2) {
   display: flex;
   gap: 30px;
   justify-content: center;
-  width: 100vw;
+  width: 100%;
 }
 
 .all-dones {
@@ -64,11 +66,10 @@
 
 .done-card {
   border-radius: 10px;
-  box-shadow: #0000001f 0 1px 3px , #0000003d 0 1px 2px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.2);
   display: flex;
   height: 170px;
-  margin: auto;
-  margin-bottom: 20px;
+  margin: 0 auto 20px;
   position: relative;
   width: 98%;
 }
@@ -81,7 +82,7 @@
 .done-card a {
   color: inherit;
   display: flex;
-  text-decoration: inherit;
+  text-decoration: none;
 }
 
 .done-informations {
@@ -123,7 +124,7 @@
 }
 
 .copied-warning {
-  background-color: #fe4800d8;
+  background-color: rgba(254, 73, 0, 0.85);
   border-radius: 10px;
   left: 40%;
   padding: 10px;
@@ -135,13 +136,4 @@
   background-color: inherit;
   border: none;
   border-radius: 50%;
-  padding: 6px;
-  position: absolute;
-  right: -2px;
-  top: -15px;
-  z-index: 998;
-}
-
-.filter-by-meal-btn:focus, .filter-by-drink-btn:focus, .filter-by-all-btn:focus {
-  border-bottom: 2px #fe4900 solid;
 }

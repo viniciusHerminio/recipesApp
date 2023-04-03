@@ -1,27 +1,73 @@
 .carousel {
   cursor: grab;
   overflow: hidden;
-}
-
-.inner {
+  }
+  
+  .inner {
   display: flex;
-}
-
-.inner-item {
+  }
+  
+  .inner-item {
   max-width: 200px;
   padding: 13px;
-}
-
-.slider-recipe-img {
+  margin-right: 15%;
+  box-sizing: border-box; /* adicionado para evitar problemas de layout */
+  }
+  
+  .slider-recipe-img {
   border-radius: 10px 10px 0 0;
-  max-width: 180px;
+  max-width: 100%; /* adicionado para garantir que a imagem ocupe todo o espaço disponível /
+  height: auto; / adicionado para garantir que a proporção da imagem seja mantida */
   pointer-events: none;
-}
-
-.slider-recipe-btn {
+  }
+  
+  .slider-recipe-btn {
   background-color: transparent;
   border: 1px rgba(70, 70, 70, 0.514) solid;
   border-radius: 10px;
   height: 210px;
   margin-bottom: 20px;
-}
+  box-sizing: border-box; /* adicionado para evitar problemas de layout /
+  display: flex; / adicionado para permitir o alinhamento vertical /
+  justify-content: center; / adicionado para permitir o alinhamento vertical /
+  align-items: center; / adicionado para permitir o alinhamento vertical */
+  }
+  
+  .slider-recipe-btn:hover {
+  background-color: rgba(70, 70, 70, 0.514);
+  }
+  
+  .slider-recipe-btn:focus {
+  outline: none;
+  }
+  
+  .slider-recipe-btn:focus-visible {
+  outline: 2px solid rgba(70, 70, 70, 0.514);
+  outline-offset: 2px;
+  }
+  
+  .slider-recipe-btn img {
+  max-width: 100%; /* adicionado para garantir que a imagem ocupe todo o espaço disponível /
+  height: auto; / adicionado para garantir que a proporção da imagem seja mantida */
+  }
+  
+  .slider-recipe-btn span {
+  font-weight: 700;
+  font-size: 18px;
+  color: rgba(70, 70, 70, 0.514);
+  margin-top: 10px;
+  }
+  
+  .slider-recipe-btn:hover span {
+  color: white;
+  }
+  
+  .slider-recipe-btn:focus span {
+  color: white;
+  }
+  
+  .slider-recipe-btn:focus-visible span {
+  color: white;
+  }
+  
+  

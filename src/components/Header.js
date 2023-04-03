@@ -3,6 +3,7 @@ import { Link, useHistory } from 'react-router-dom';
 import '../styles/Header.css';
 // import iconProfile from '../images/profileIcon.svg';
 // import iconSearch from '../images/searchIcon.svg';
+import { TbArrowNarrowLeft } from 'react-icons/tb';
 import foodsIcon from '../images/icone-prato.png';
 import drinksIcon from '../images/icone-bebida.png';
 import logo from '../images/alternativeLogoWhite.png';
@@ -18,7 +19,11 @@ function Header({ search, profileUser, children, goBack }) {
     setLoading(true);
   };
   return (
-    <div>
+    <div className="header">
+      {goBack && <TbArrowNarrowLeft
+        className="arrow-left"
+        onClick={ handleClick }
+      />}
       <div className="top-header">
         <div className="top-images">
           <img src={ logo } alt="logo" />

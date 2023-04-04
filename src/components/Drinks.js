@@ -42,7 +42,6 @@ function Recipes() {
     const data = await drinksCategoryAPI();
     return data.drinks;
   };
-
   useEffect(() => {
     withoutFilter();
     getDrinksCategory().then((data) => {

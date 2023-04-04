@@ -31,10 +31,3 @@ Crie uma branch com suas alterações: git checkout -b minha-branch
 Faça commit das suas alterações: git commit -m 'Minhas alterações'
 Faça push para a branch: git push origin minha-branch
 Abra um pull request.
-Autor
-
-O Receitas App foi desenvolvido por um desenvolvedor desconhecido.
-
-Licença
-
-Este projeto não possui uma licença especificada.

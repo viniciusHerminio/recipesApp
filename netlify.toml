@@ -1,0 +1,3 @@
+[build]
+  command = "ESLINT_NO_DEV_ERRORS=true npm run build"
+  publish = "public"

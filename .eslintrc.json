@@ -3,6 +3,7 @@
   "overrides": [
     {
       "files": ["src/tests/**/*.js"],
+      "plugins": ["react", "react-hooks"],
       "rules": {
         "max-len": [
           "error",
@@ -15,9 +16,9 @@
           }
         ],
         "max-lines": [ "off" ],
-        "no-magic-numbers": ["off"],
-        "no-warning-comments": ["off"],
-        "react-hooks/exhaustive-deps": ["off"]
+        "no-magic-numbers": [ "off" ],
+        "no-warning-comments": "off",
+        "react-hooks/exhaustive-deps": "off"
       }
     }
   ]

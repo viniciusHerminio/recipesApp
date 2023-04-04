@@ -44,12 +44,14 @@ function Recipes() {
   };
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     withoutFilter();
     getDrinksCategory().then((data) => {
       const limit = 5;
       const categories = data.filter((_category, index) => index < limit);
       setDrinksCategory(categories);
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleClick = (id) => {

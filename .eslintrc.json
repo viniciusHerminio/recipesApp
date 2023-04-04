@@ -16,7 +16,8 @@
         ],
         "max-lines": [ "off" ],
         "no-magic-numbers": ["off"],
-        "no-warning-comments": ["off"]
+        "no-warning-comments": ["off"],
+        "react-hooks/exhaustive-deps": ["off"]
       }
     }
   ]
